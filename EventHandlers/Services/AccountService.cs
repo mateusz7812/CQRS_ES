@@ -7,7 +7,7 @@ namespace EventHandlers.Services
 {
     public class AccountService: Service<Account>
     {
-        public AccountService(IRepository repository) : base(repository)
+        public AccountService(IRepository<Account> repository) : base(repository)
         {
         }
     }

@@ -5,9 +5,9 @@ namespace EventHandlers.Services
 {
     public abstract class Service<T>: IService<T> where T: IModel
     {
-        private IRepository _repository;
+        private readonly IRepository<T> _repository;
 
-        protected Service(IRepository repository)
+        protected Service(IRepository<T> repository)
         {
             _repository = repository;
         }

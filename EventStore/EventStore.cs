@@ -14,9 +14,10 @@ namespace EventStore
             => _events.Add(@event);
 
         public List<IEvent> FindByItemGuid(Guid itemGuid) 
-            => (List<IEvent>) 
-                from @event in _events
-                where @event.ItemGuid.Equals(itemGuid)
-                select @event;
+            => (
+                    from @event in _events
+                    where @event.ItemGuid.Equals(itemGuid)
+                    select @event
+                ).ToList();
     }
 }
