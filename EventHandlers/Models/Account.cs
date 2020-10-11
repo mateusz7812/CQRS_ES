@@ -2,7 +2,7 @@
 
 namespace EventHandlers.Models
 {
-    public class Account: IModel
+    public class Account: IModel, GraphQl.
     {
         public Guid Guid { get; private set; }
 

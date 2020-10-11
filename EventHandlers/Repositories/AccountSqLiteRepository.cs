@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data.SQLite;
 using EventHandlers.Models;
 
@@ -49,6 +50,21 @@ namespace EventHandlers.Repositories
 
                 var id = Guid.Parse(Convert.ToString(reader["id"]));
                 return new Account(id);
+            }
+        }
+
+        public List<Account> FindAll()
+        {
+            var command = "SELECT * FROM " + _tableName + ";";
+            using (var reader = ExecuteCommand(command).ExecuteReader())
+            {
+                var accounts = new List<Account>();
+                while (reader.Read())
+                {
+                    var id = Guid.Parse(Convert.ToString(reader["id"]));
+                    accounts.Add(new Account(id));
+                }
+                return accounts;
             }
         }
     }

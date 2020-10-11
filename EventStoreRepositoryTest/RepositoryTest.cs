@@ -1,13 +1,10 @@
-
-using CommandHandlers;
-using EventsAndCommands.Commands;
+using System;
 using EventsAndCommands.Events;
 using EventStore;
 using Moq;
-using System;
 using Xunit;
 
-namespace EventsStoreRepositoryTest
+namespace EventStoreRepositoryTest
 {
     public class RepositoryTest
     {

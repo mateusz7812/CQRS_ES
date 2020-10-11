@@ -9,6 +9,6 @@ namespace EventHandlers
     {
         void Save(T item);
         T FindById(Guid itemGuid);
-
+        List<T> FindAll();
     }
 }
