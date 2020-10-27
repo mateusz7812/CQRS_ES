@@ -2,10 +2,10 @@ using CommandHandlers;
 using CommandHandlers.Aggregates;
 using CommandHandlers.AggregatesServices;
 using CommandHandlers.CommandHandlers;
-using EventsAndCommands.Commands;
 using EventsAndCommands.Events;
 using Moq;
 using System;
+using Commands.Commands;
 using EventsAndCommands;
 using Xunit;
 
@@ -13,6 +13,7 @@ namespace CommandHandlersTests
 {
     public class CreateAccountCommandHandlerTest
     {
+
         [Fact]
         public void TestCommandType()
         {
@@ -24,7 +25,7 @@ namespace CommandHandlersTests
         }
 
         [Fact]
-        public void TestVerify()
+        public void TestCommandCheck()
         {
             var accountServiceMock = new Mock<IAggregateService<Account>>();
             accountServiceMock.Setup(m => m.SaveAndPublish(It.IsAny<IEvent>()));
@@ -38,7 +39,7 @@ namespace CommandHandlersTests
         }
 
         [Fact]
-        public void TestVerifyBad()
+        public void TestIncorrectCommandCheck()
         {
             var accountServiceMock = new Mock<IAggregateService<Account>>();
             accountServiceMock.Setup(m => m.SaveAndPublish(It.IsAny<IEvent>()));
@@ -51,18 +52,25 @@ namespace CommandHandlersTests
         }
 
         [Fact]
-        public void TestHandle()
+        public void TestCommandHandle()
         {
+            var observerMock = new Mock<IObserver>();
+            observerMock.Setup(o => o.Update(It.IsAny<CreateAccountEvent>()));
+
             var accountServiceMock = new Mock<IAggregateService<Account>>();
             accountServiceMock.Setup(m => m.SaveAndPublish(It.IsAny<IEvent>()));
+            
             var commandHandler = new CreateAccountCommandHandler(accountServiceMock.Object);
+            commandHandler.AddObserver(observerMock.Object);
+            
             var accountGuid = Guid.NewGuid();
             ICommand command = new CreateAccountCommand(accountGuid);
 
             commandHandler.Handle(command);
 
             Assert.Equal(1, accountServiceMock.Invocations.Count);
-            Assert.Equal(accountGuid, (accountServiceMock.Invocations[0].Arguments[0] as CreateAccountEvent).AccountGuid);
+            Assert.Equal(accountGuid, ((CreateAccountEvent) accountServiceMock.Invocations[0].Arguments[0]).AccountGuid);
+            observerMock.VerifyAll();
         }
     }
 }

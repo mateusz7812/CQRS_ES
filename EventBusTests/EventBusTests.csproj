@@ -17,7 +17,7 @@
     <ProjectReference Include="..\CommandHandlers\CommandHandlers.csproj" />
     <ProjectReference Include="..\EventBus\EventBus.csproj" />
     <ProjectReference Include="..\EventHandlers\EventHandlers.csproj" />
-    <ProjectReference Include="..\EventsAndCommands\EventsAndCommands.csproj" />
+    <ProjectReference Include="..\EventsAndCommands\Events.csproj" />
   </ItemGroup>
 
 </Project>

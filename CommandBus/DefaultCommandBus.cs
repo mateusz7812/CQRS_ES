@@ -10,8 +10,6 @@ namespace CommandBus
         private readonly Dictionary<Type, ICommandHandler> _commandHandlersByCommandType = new Dictionary<Type, ICommandHandler>();
         private readonly Queue<ICommand> _commands = new Queue<ICommand>();
 
-        public DefaultCommandBus(){}
-
         public void AddCommand(ICommand command) => _commands.Enqueue(command);
 
         public void AddCommandHandler(ICommandHandler commandHandler) 

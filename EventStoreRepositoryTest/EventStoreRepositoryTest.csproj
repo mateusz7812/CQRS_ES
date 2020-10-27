@@ -14,7 +14,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\EventsAndCommands\EventsAndCommands.csproj" />
+    <ProjectReference Include="..\EventsAndCommands\Events.csproj" />
     <ProjectReference Include="..\EventStore\EventStore.csproj" />
   </ItemGroup>
 

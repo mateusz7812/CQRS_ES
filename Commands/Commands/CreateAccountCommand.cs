@@ -1,8 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
+using EventsAndCommands;
 
-namespace EventsAndCommands.Commands
+namespace Commands.Commands
 {
     public class CreateAccountCommand: ICommand
     {

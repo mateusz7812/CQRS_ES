@@ -4,8 +4,8 @@ using CommandBus;
 using CommandHandlers.CommandHandlers;
 using Moq;
 using CommandHandlers;
+using Commands.Commands;
 using EventsAndCommands;
-using EventsAndCommands.Commands;
 
 namespace CommandBusTest
 {

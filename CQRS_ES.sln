@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.28307.1022
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30611.23
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CommandBus", "CommandBus\CommandBus.csproj", "{0DA7F6E0-6B2C-42C8-93A1-ADC8504E3C8B}"
 EndProject
@@ -11,7 +11,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CommandHandlers", "CommandH
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EventBus", "EventBus\EventBus.csproj", "{74150358-1655-41C3-84D6-02F83B4654C9}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EventsAndCommands", "EventsAndCommands\EventsAndCommands.csproj", "{642D67D2-A5D2-4BA5-90C9-09911E2110A1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Events", "EventsAndCommands\Events.csproj", "{642D67D2-A5D2-4BA5-90C9-09911E2110A1}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EventHandlers", "EventHandlers\EventHandlers.csproj", "{DA0B5849-256C-4CDC-A0F1-DEA90EC39EEB}"
 EndProject
@@ -31,7 +31,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SqLiteTest", "SqLiteTest\Sq
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EventStoreRepositoryTest", "EventStoreRepositoryTest\EventStoreRepositoryTest.csproj", "{8D0033DD-DC84-4FF3-A444-F253E6286619}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ReadApi", "ReadApi\ReadApi.csproj", "{90B3F0FB-AB4D-4933-ADAC-5E72620F1AF5}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Commands", "Commands\Commands.csproj", "{012CEAB6-4EEB-4B49-A143-B79DAF0899A4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FunctionalTests", "FunctionalTests\FunctionalTests.csproj", "{F189E87B-9474-471D-B783-5AFBA45E6E74}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -91,10 +93,14 @@ Global
 		{8D0033DD-DC84-4FF3-A444-F253E6286619}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8D0033DD-DC84-4FF3-A444-F253E6286619}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8D0033DD-DC84-4FF3-A444-F253E6286619}.Release|Any CPU.Build.0 = Release|Any CPU
-		{90B3F0FB-AB4D-4933-ADAC-5E72620F1AF5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{90B3F0FB-AB4D-4933-ADAC-5E72620F1AF5}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{90B3F0FB-AB4D-4933-ADAC-5E72620F1AF5}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{90B3F0FB-AB4D-4933-ADAC-5E72620F1AF5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{012CEAB6-4EEB-4B49-A143-B79DAF0899A4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{012CEAB6-4EEB-4B49-A143-B79DAF0899A4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{012CEAB6-4EEB-4B49-A143-B79DAF0899A4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{012CEAB6-4EEB-4B49-A143-B79DAF0899A4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F189E87B-9474-471D-B783-5AFBA45E6E74}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F189E87B-9474-471D-B783-5AFBA45E6E74}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F189E87B-9474-471D-B783-5AFBA45E6E74}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F189E87B-9474-471D-B783-5AFBA45E6E74}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -107,6 +113,7 @@ Global
 		{6E0C515D-59AF-4777-8265-FE022BB75112} = {EB8E0AFF-15BE-48B9-B1D0-E61CE7CFA5B6}
 		{B374DB15-C20C-45E5-A5CF-4DEE09943824} = {EB8E0AFF-15BE-48B9-B1D0-E61CE7CFA5B6}
 		{8D0033DD-DC84-4FF3-A444-F253E6286619} = {EB8E0AFF-15BE-48B9-B1D0-E61CE7CFA5B6}
+		{F189E87B-9474-471D-B783-5AFBA45E6E74} = {EB8E0AFF-15BE-48B9-B1D0-E61CE7CFA5B6}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {82BB25EB-CF3D-4F1F-BF8A-1481E328851B}

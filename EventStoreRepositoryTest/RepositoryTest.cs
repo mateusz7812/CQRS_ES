@@ -14,9 +14,9 @@ namespace EventStoreRepositoryTest
             var eventStoreMock = new Mock<DefaultEventStore>();
             var repository = new Repository(eventStoreMock.Object);
             var accountGuid = Guid.NewGuid();
-            var @event = new CreateAccountEvent(Guid.NewGuid(), accountGuid);
+            var createAccountEvent = new CreateAccountEvent(Guid.NewGuid(), accountGuid);
 
-            repository.Save(@event);
+            repository.Save(createAccountEvent);
             var events = repository.GetEventsOfItemGuid(accountGuid);
 
             Assert.Single(events);

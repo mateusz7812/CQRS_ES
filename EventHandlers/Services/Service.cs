@@ -14,12 +14,12 @@ namespace EventHandlers.Services
 
         public virtual void Save(T model)
         {
-            throw new NotImplementedException();
+            _repository.Save(model);
         }
 
         public virtual T FindById(Guid itemGuid)
         {
-            throw new NotImplementedException();
+            return _repository.FindById(itemGuid);
         }
 
         public virtual void Delete(Guid itemGuid)

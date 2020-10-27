@@ -18,10 +18,9 @@ namespace EventBusTests
             public void AddObserver(IObserver observer) => _observers.Add(observer);
             public void NotifyObservers(IEvent @event) => _observers.ForEach(o=>o.Update(@event));
         }
-        
 
         [Fact]
-        public void Test1()
+        public void TestEventHandle()
         {
             var observable = new Observable();
             var eventHandlerMock = new Mock<TypedEventHandler<CreateAccountEvent>>();
