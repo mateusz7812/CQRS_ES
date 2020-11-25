@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using EventsAndCommands;
+using Bus;
+using Events;
 
 namespace EventHandlers
 {
-    public interface IEventHandler
+    public interface IEventHandler: IHandler<IEvent>
     {
-        Type EventType { get; }
-        void Handle(IEvent @event);
     }
 }

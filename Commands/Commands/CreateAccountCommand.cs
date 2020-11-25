@@ -1,5 +1,4 @@
 ﻿using System;
-using EventsAndCommands;
 
 namespace Commands.Commands
 {
@@ -11,6 +10,5 @@ namespace Commands.Commands
         {
             AccountGuid = accountGuid;
         }
-
     }
 }

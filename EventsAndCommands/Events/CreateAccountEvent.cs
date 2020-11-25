@@ -1,15 +1,17 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
-namespace EventsAndCommands.Events
+namespace Events.Events
 {
-    public class CreateAccountEvent: Event
+    public class CreateAccountEvent : IEvent
     {
-        public Guid AccountGuid { get; }
 
-        public CreateAccountEvent(Guid eventGuid, Guid accountGuid) 
-            : base(eventGuid, accountGuid) 
-            => AccountGuid = accountGuid;
+        public CreateAccountEvent(Guid eventGuid, Guid accountGuid)
+        {
+            EventGuid = eventGuid;
+            ItemGuid = accountGuid;
+        }
+
+        public Guid EventGuid { get; }
+        public Guid ItemGuid { get; }
     }
 }

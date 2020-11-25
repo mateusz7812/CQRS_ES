@@ -1,8 +1,8 @@
-using CommandHandlers.Aggregates;
-using EventsAndCommands.Events;
 using System;
 using System.Collections.Generic;
-using EventsAndCommands;
+using CommandHandlers.AccountComponents;
+using Events;
+using Events.Events;
 using Xunit;
 
 namespace AggregatesTests

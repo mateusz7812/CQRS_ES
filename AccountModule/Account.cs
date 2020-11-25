@@ -1,10 +1,9 @@
-﻿using EventsAndCommands.Events;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Text;
-using EventsAndCommands;
+using Events;
+using Events.Events;
 
-namespace CommandHandlers.Aggregates
+namespace CommandHandlers.AccountComponents
 {
     public class Account : IAggregate
     {

@@ -1,15 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using EventsAndCommands;
+using Bus;
+using Commands;
+using Events;
 
 namespace CommandHandlers.CommandHandlers
 {
-    public abstract class TypedCommandHandler<T> : ICommandHandler where T: ICommand
+    public abstract class TypedCommandHandler<T> : AbstractObservable<T>, IHandler<ICommand>
+        where T: IEvent
     {
-        public Type CommandType => typeof(T);
-
         public abstract void Handle(ICommand command);
-        public abstract bool CommandIsCorrect(ICommand command);
+        public abstract bool CanHandle(ICommand command);
     }
 }

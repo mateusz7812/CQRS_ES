@@ -4,7 +4,7 @@ using EventHandlers;
 using EventHandlers.EventHandlers;
 using EventHandlers.Models;
 using EventHandlers.Services;
-using EventsAndCommands.Events;
+using Events.Events;
 using Moq;
 using Xunit;
 

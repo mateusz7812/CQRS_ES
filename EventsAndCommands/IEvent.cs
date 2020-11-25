@@ -1,8 +1,9 @@
 ﻿using System;
+using Bus;
 
-namespace EventsAndCommands
+namespace Events
 {
-    public interface IEvent
+    public interface IEvent: IHandleable
     {
         Guid EventGuid { get; }
         Guid ItemGuid { get; }

@@ -1,11 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using CommandHandlers.Aggregates;
+using Aggregates;
+using CommandHandlers;
+using CommandHandlers.AggregatesServices;
+using CommandHandlers.CommandHandlers;
 using Commands.Commands;
-using EventsAndCommands;
-using EventsAndCommands.Events;
+using Events;
+using Events.Events;
 
-namespace CommandHandlers.CommandHandlers
+namespace AccountComponents
 {
     public class CreateAccountCommandHandler : TypedCommandHandler<CreateAccountCommand>, IObservable
     {
@@ -18,17 +21,16 @@ namespace CommandHandlers.CommandHandlers
             _observers = new List<IObserver>();
         }
 
-        public override void Handle(ICommand command)
+        public override void Handle(CreateAccountCommand command)
         {
-            if (!(command is CreateAccountCommand accountCommand)) return;
-            var accountGuid = accountCommand.AccountGuid;
+            var accountGuid = command.AccountGuid;
             var createAccountEvent = new CreateAccountEvent(Guid.NewGuid(), accountGuid);
             _accountService.SaveAndPublish(createAccountEvent);
             NotifyObservers(createAccountEvent);
         }
 
-        public override bool CommandIsCorrect(ICommand command) => 
-            ((CreateAccountCommand) command).AccountGuid != Guid.Empty;
+        public override bool CommandIsCorrect(CreateAccountCommand command) => 
+            command.AccountGuid != Guid.Empty;
 
         public void AddObserver(IObserver observer) => 
             _observers.Add(observer);

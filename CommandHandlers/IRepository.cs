@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using EventsAndCommands;
+using Events;
 
 namespace CommandHandlers
 {
     public interface IRepository
     {
         void Save(IEvent @event);
-        List<IEvent> GetEventsOfItemGuid(Guid aggregateGuid);
+        List<IEvent> GetByItemGuid(Guid aggregateGuid);
     }
 }

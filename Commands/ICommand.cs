@@ -1,7 +1,9 @@
-﻿namespace EventsAndCommands
+﻿using System;
+using Bus;
+
+namespace Commands
 {
-    public interface ICommand
+    public interface ICommand: IHandleable
     {
-        
     }
 }

@@ -6,6 +6,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Commands\Commands.csproj" />
+    <ProjectReference Include="..\EventHandlers\EventHandlers.csproj" />
     <ProjectReference Include="..\EventsAndCommands\Events.csproj" />
   </ItemGroup>
 

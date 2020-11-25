@@ -5,6 +5,9 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Bus\Bus.csproj" />
+    <ProjectReference Include="..\Cache\Cache.csproj" />
+    <ProjectReference Include="..\CommandHandlerFactoryMethods\CommandHandlerFactoryMethods.csproj" />
     <ProjectReference Include="..\CommandHandlers\CommandHandlers.csproj" />
     <ProjectReference Include="..\EventsAndCommands\Events.csproj" />
   </ItemGroup>

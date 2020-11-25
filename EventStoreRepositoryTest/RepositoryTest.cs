@@ -1,5 +1,5 @@
 using System;
-using EventsAndCommands.Events;
+using Events.Events;
 using EventStore;
 using Moq;
 using Xunit;
@@ -17,7 +17,7 @@ namespace EventStoreRepositoryTest
             var createAccountEvent = new CreateAccountEvent(Guid.NewGuid(), accountGuid);
 
             repository.Save(createAccountEvent);
-            var events = repository.GetEventsOfItemGuid(accountGuid);
+            var events = repository.GetByItemGuid(accountGuid);
 
             Assert.Single(events);
             Assert.True(events[0].GetType() == typeof(CreateAccountEvent));

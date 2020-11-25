@@ -1,27 +1,40 @@
 ﻿using System;
 using System.Collections.Generic;
+using Cache;
+using CommandHandlerFactoryMethods;
 using CommandHandlers;
-using EventsAndCommands;
+using Commands;
 
 namespace CommandBus
 {
     public class DefaultCommandBus : ICommandBus
     {
-        private readonly Dictionary<Type, ICommandHandler> _commandHandlersByCommandType = new Dictionary<Type, ICommandHandler>();
-        private readonly Queue<ICommand> _commands = new Queue<ICommand>();
+        private readonly ICommandHandlerFactoryMethod _factoryMethod;
+        private readonly ICache<ICommand> _cache;
 
-        public void AddCommand(ICommand command) => _commands.Enqueue(command);
+        public DefaultCommandBus(ICommandHandlerFactoryMethod factoryMethod, ICache<ICommand> cache)
+        {
+            _factoryMethod = factoryMethod;
+            _cache = cache;
+        }
 
-        public void AddCommandHandler(ICommandHandler commandHandler) 
-            => _commandHandlersByCommandType.Add(commandHandler.CommandType, commandHandler);
+        public void Add(ICommand command)
+        {
+            _cache.Add(command);
+        }
 
         public void HandleNext()
         {
-            var command = _commands.Dequeue();
-            var handler = _commandHandlersByCommandType[command.GetType()];
-            if (handler.CommandIsCorrect(command)) handler.Handle(command);
+            var command = _cache.First();
+            var handler = _factoryMethod.CreateHandler(command);
+            
+            if(handler == null) 
+                throw new NotSupportedException("Handler not found");
+            
+            handler.Handle(command);
+            _cache.Remove(command);
         }
 
-        public bool IsBusEmpty => _commands.Count == 0;
+        public bool IsBusEmpty => _cache.IsEmpty;
     }
 }

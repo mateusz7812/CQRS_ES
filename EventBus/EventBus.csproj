@@ -5,7 +5,9 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Cache\Cache.csproj" />
     <ProjectReference Include="..\CommandHandlers\CommandHandlers.csproj" />
+    <ProjectReference Include="..\EventHandlersFactoryMethods\EventHandlersFactoryMethods.csproj" />
     <ProjectReference Include="..\EventHandlers\EventHandlers.csproj" />
   </ItemGroup>
 

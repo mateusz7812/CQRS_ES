@@ -3,15 +3,12 @@ using CommandHandlers.CommandHandlers;
 using System;
 using System.Collections.Generic;
 using System.Text;
-using EventsAndCommands;
+using Bus;
+using Commands;
 
 namespace CommandBus
 {
-    public interface ICommandBus
+    public interface ICommandBus: IBus<ICommand>
     {
-        void AddCommandHandler(ICommandHandler commandHandler);
-        void AddCommand(ICommand command);
-        void HandleNext();
-        bool IsBusEmpty { get; }
     }
 }

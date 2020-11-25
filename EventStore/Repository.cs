@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using CommandHandlers;
-using EventsAndCommands;
+using Events;
 
 namespace EventStore
 {
@@ -14,7 +14,7 @@ namespace EventStore
             _eventStore = eventStore;
         }
 
-        public List<IEvent> GetEventsOfItemGuid(Guid itemGuid)
+        public List<IEvent> GetByItemGuid(Guid itemGuid)
         {
             return _eventStore.FindByItemGuid(itemGuid);
         }
