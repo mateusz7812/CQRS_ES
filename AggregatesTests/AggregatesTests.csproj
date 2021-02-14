@@ -12,11 +12,4 @@
     <PackageReference Include="xunit.runner.visualstudio" Version="2.4.0" />
   </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\CommandHandlers\CommandHandlers.csproj" />
-    <ProjectReference Include="..\EventHandlers\EventHandlers.csproj" />
-    <ProjectReference Include="..\EventsAndCommands\Events.csproj" />
-    <ProjectReference Include="..\EventStore\EventStore.csproj" />
-  </ItemGroup>
-
 </Project>

@@ -5,13 +5,13 @@ using Xunit;
 
 namespace SqLiteTest
 {
-    public class UnitTest1
+    public class SqlLiteTest
     {
         [Fact]
         public void TestFindById()
         {
             var accountGuid = Guid.NewGuid();
-            var account = new Account(accountGuid);
+            var account = new AccountModule(accountGuid);
             var repository = new AccountSqlLiteRepository("accounts");
             repository.CreateTable();
             repository.Save(account);
@@ -25,7 +25,7 @@ namespace SqLiteTest
         public void TestFindAll()
         {
             var accountGuid = Guid.NewGuid();
-            var account = new Account(accountGuid);
+            var account = new AccountModule(accountGuid);
             var repository = new AccountSqlLiteRepository("accounts");
             repository.CreateTable();
             repository.Save(account);

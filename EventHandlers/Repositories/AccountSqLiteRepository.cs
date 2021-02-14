@@ -6,7 +6,7 @@ using EventHandlers.Models;
 namespace EventHandlers.Repositories
 
 {
-    public class AccountSqlLiteRepository: IRepository<Account>
+    public class AccountSqlLiteRepository: IRepository<AccountModule>
     {
         private readonly string _tableName;
         private SQLiteConnection _connection;
@@ -35,13 +35,13 @@ namespace EventHandlers.Repositories
             ExecuteCommand(command);
         }
 
-        public void Save(Account account)
+        public void Save(AccountModule account)
         {
             var command = "INSERT INTO " + _tableName + " VALUES ('" + account.Guid + "')";
             ExecuteCommand(command);
         }
 
-        public Account FindById(Guid accountGuid)
+        public AccountModule FindById(Guid accountGuid)
         {
             var command = "SELECT * FROM " + _tableName + " WHERE id=\'" + accountGuid + "\';";
             using (var reader = ExecuteCommand(command).ExecuteReader())
@@ -49,20 +49,20 @@ namespace EventHandlers.Repositories
                 if (!reader.Read()) return null;
 
                 var id = Guid.Parse(Convert.ToString(reader["id"]));
-                return new Account(id);
+                return new AccountModule(id);
             }
         }
 
-        public List<Account> FindAll()
+        public List<AccountModule> FindAll()
         {
             var command = "SELECT * FROM " + _tableName + ";";
             using (var reader = ExecuteCommand(command).ExecuteReader())
             {
-                var accounts = new List<Account>();
+                var accounts = new List<AccountModule>();
                 while (reader.Read())
                 {
                     var id = Guid.Parse(Convert.ToString(reader["id"]));
-                    accounts.Add(new Account(id));
+                    accounts.Add(new AccountModule(id));
                 }
                 return accounts;
             }

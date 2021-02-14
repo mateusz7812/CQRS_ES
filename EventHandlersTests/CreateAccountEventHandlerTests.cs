@@ -18,7 +18,7 @@ namespace EventHandlersTests
             var accountGuid = Guid.NewGuid();
             var createAccountEvent = new CreateAccountEvent(Guid.NewGuid(), accountGuid);
             var accountServiceMock = new Mock<AccountService>(new object[]{null});
-            accountServiceMock.Setup(s => s.Save(It.Is<Account>(a => a.Guid.Equals(accountGuid))));
+            accountServiceMock.Setup(s => s.Save(It.Is<AccountModule>(a => a.Guid.Equals(accountGuid))));
             var eventHandler = new CreateAccountEventHandler(accountServiceMock.Object);
             
             eventHandler.Handle(createAccountEvent);

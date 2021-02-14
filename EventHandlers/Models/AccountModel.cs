@@ -2,11 +2,11 @@
 
 namespace EventHandlers.Models
 {
-    public class Account: IModel
+    public class AccountModule: IModel
     {
         public Guid Guid { get; private set; }
 
-        public Account(Guid guid)
+        public AccountModule(Guid guid)
         {
             Guid = guid;
         }

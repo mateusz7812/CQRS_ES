@@ -1,8 +1,9 @@
 ﻿using System;
+using Core;
 
-namespace Commands.Commands
+namespace AccountModule.CreateAccount
 {
-    public class CreateAccountCommand: ICommand
+    public class CreateAccountCommand : ICommand
     {
         public Guid AccountGuid { get; }
 
@@ -10,5 +11,6 @@ namespace Commands.Commands
         {
             AccountGuid = accountGuid;
         }
+
     }
 }

@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using CommandHandlers.AggregateFactoryMethod;
-using Events;
 
-namespace CommandHandlers.AggregatesServices
+namespace Core
 {
     public class AggregateService<T>: AbstractObservable<IEvent>, IAggregateService<T> where T : IAggregate
     {

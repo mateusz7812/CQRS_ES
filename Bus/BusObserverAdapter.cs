@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Bus
+namespace Core
 { 
     public class BusObserverAdapter<T>: IObserver<T> where T:IHandleable
     {

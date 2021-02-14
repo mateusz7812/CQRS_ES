@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using Cache;
 
-namespace Bus
+namespace Core
 {
     public class Bus<T>: IBus<T> where T:IHandleable
     {

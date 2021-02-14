@@ -2,7 +2,7 @@
 using System.Runtime.InteropServices.ComTypes;
 using CommandHandlers.AccountComponents;
 
-namespace CommandHandlers.AggregateFactoryMethod
+namespace Core
 {
     public class AggregateFactoryMethod : IAggregateFactoryMethod
     {

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace CommandHandlers
+namespace Core
 {
     public abstract class AbstractObservable<T>: IObservable<T>
     {

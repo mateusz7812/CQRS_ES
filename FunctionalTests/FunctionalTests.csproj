@@ -8,19 +8,14 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.5.0" />
-    <PackageReference Include="xunit" Version="2.4.0" />
-    <PackageReference Include="xunit.assert" Version="2.4.0" />
-    <PackageReference Include="xunit.extensibility.core" Version="2.4.0" />
+    <PackageReference Include="xunit" Version="2.4.1" />
     <PackageReference Include="xunit.runner.visualstudio" Version="2.4.0" />
     <PackageReference Include="coverlet.collector" Version="1.2.0" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\CommandHandlers\CommandHandlers.csproj" />
-    <ProjectReference Include="..\Commands\Commands.csproj" />
-    <ProjectReference Include="..\EventHandlers\EventHandlers.csproj" />
-    <ProjectReference Include="..\EventsAndCommands\Events.csproj" />
-    <ProjectReference Include="..\EventStore\EventStore.csproj" />
+    <ProjectReference Include="..\AccountModule\AccountModule.csproj" />
+    <ProjectReference Include="..\Core\Core.csproj" />
   </ItemGroup>
 
 </Project>

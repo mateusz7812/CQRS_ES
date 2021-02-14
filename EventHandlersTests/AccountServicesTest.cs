@@ -16,7 +16,7 @@ namespace EventHandlersTests
         public void CreateAccountTest()
         {
             var accountId = Guid.NewGuid();
-            var account = new Account(accountId);
+            var account = new AccountModule(accountId);
             var repository = new AccountSqlLiteRepository("account");
             repository.CreateTable();
 

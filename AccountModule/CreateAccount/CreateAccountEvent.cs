@@ -1,6 +1,7 @@
 ﻿using System;
+using Core;
 
-namespace Events.Events
+namespace AccountModule.CreateAccount
 {
     public class CreateAccountEvent : IEvent
     {

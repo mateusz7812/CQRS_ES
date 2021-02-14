@@ -1,16 +1,8 @@
+using Core;
 using System;
-using Bus;
-using Cache;
-using CommandHandlers.AccountComponents;
-using CommandHandlers.AggregateFactoryMethod;
-using CommandHandlers.AggregatesServices;
-using Commands;
-using Commands.Commands;
-using EventHandlers.EventHandlers;
-using EventHandlers.Repositories;
-using EventHandlers.Services;
-using Events;
-using EventStore;
+using AccountModule.CreateAccount;
+using AccountModule.Read;
+using AccountModule.Write;
 using Xunit;
 
 namespace FunctionalTests
@@ -20,30 +12,31 @@ namespace FunctionalTests
         [Fact]
         public void Test1()
         {
-            var eventStore = new DefaultEventStore();
-            var eventRepository = new Repository(eventStore); 
-            var aggregateFactoryMethod = new AggregateFactoryMethod();
-            var accountAggregateService = new AggregateService<Account>(eventRepository, aggregateFactoryMethod);
-            var createAccountCommandHandler = new CreateAccountCommandHandler(accountAggregateService);
-
-            var cache = new Cache<ICommand>();
-            var commandHandlerFactoryMethod = new HandlerFactoryMethod<ICommand>();
-            commandHandlerFactoryMethod.AddHandler(createAccountCommandHandler);
-            var commandBus = new Bus<ICommand>(commandHandlerFactoryMethod, cache);
-
-            var defaultCache = new Cache<IEvent>();
-            var eventHandlerFactoryMethod = new HandlerFactoryMethod<IEvent>();
-            var eventBus = new Bus<IEvent>(eventHandlerFactoryMethod, defaultCache);
-
-            var busObserverAdapter = new BusObserverAdapter<IEvent>(eventBus);
-            createAccountCommandHandler.AddObserver(busObserverAdapter);
-
             var accountsRepository = new AccountSqlLiteRepository("accounts");
             accountsRepository.CreateTable();
 
             var accountService = new AccountService(accountsRepository);
             var createAccountEventHandler = new CreateAccountEventHandler(accountService);
+
+            var eventStore = new DefaultEventStore();
+            var eventRepository = new Repository(eventStore);
+            var aggregateFactoryMethod = new AccountAggregateFactoryMethod();
+            var accountAggregateService = new AggregateService<AccountAggregate>(eventRepository, aggregateFactoryMethod);
+            var createAccountCommandHandler = new CreateAccountCommandHandler(accountAggregateService);
+
+            var commandBusCache = new Cache<ICommand>();
+            var commandHandlerFactoryMethod = new HandlerFactoryMethod<ICommand>();
+            commandHandlerFactoryMethod.AddHandler(createAccountCommandHandler);
+            var commandBus = new Bus<ICommand>(commandHandlerFactoryMethod, commandBusCache);
+
+            var eventBusCache = new Cache<IEvent>();
+            var eventHandlerFactoryMethod = new HandlerFactoryMethod<IEvent>();
             eventHandlerFactoryMethod.AddHandler(createAccountEventHandler);
+            
+            var eventBus = new Bus<IEvent>(eventHandlerFactoryMethod, eventBusCache);
+
+            var busObserverAdapter = new BusObserverAdapter<IEvent>(eventBus);
+            createAccountCommandHandler.AddObserver(busObserverAdapter);
 
             var accountId = Guid.NewGuid();
             var accountCreateCommand = new CreateAccountCommand(accountId);

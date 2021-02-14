@@ -5,7 +5,7 @@ using Events;
 
 namespace CommandHandlers
 {
-    public interface IRepository
+    public interface ICommandRepository
     {
         void Save(IEvent @event);
         List<IEvent> GetByItemGuid(Guid aggregateGuid);
