@@ -6,12 +6,12 @@ using Core;
 namespace AccountModule.Read
 
 {
-    public class AccountSqlLiteRepository : IRepository<AccountModel>
+    public class AccountSqlLiteModelRepository : IModelRepository<AccountModel>
     {
         private readonly string _tableName;
         private SQLiteConnection _connection;
 
-        public AccountSqlLiteRepository(string tableName)
+        public AccountSqlLiteModelRepository(string tableName)
         {
             _tableName = tableName;
             OpenConnection();

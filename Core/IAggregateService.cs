@@ -2,9 +2,8 @@
 
 namespace Core
 {
-    public interface IAggregateService<out T> : IObservable<IEvent> where T : IAggregate
+    public interface IAggregateService<out T> where T : IAggregate
     {
         T Load(Guid aggregateGuid);
-        void SaveAndPublish(IEvent @event);
     }
 }

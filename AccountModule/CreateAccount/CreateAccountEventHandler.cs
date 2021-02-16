@@ -5,9 +5,9 @@ namespace AccountModule.CreateAccount
 {
     public class CreateAccountEventHandler : IHandler<IEvent>
     {
-        private readonly Service<AccountModel> _accountService;
+        private readonly IService<AccountModel> _accountService;
 
-        public CreateAccountEventHandler(Service<AccountModel> accountService)
+        public CreateAccountEventHandler(IService<AccountModel> accountService)
         {
             _accountService = accountService;
         }

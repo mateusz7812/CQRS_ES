@@ -2,18 +2,17 @@
 using System.Collections.Generic;
 using AccountModule.CreateAccount;
 using Core;
-using DepositModule.Write;
 
 namespace AccountModule.Write
 {
     public class AccountAggregate : IAggregate
     {
-        public Guid Guid { get; private set; }
-        public List<DepositAggregate> Deposits { get; }
+        public Guid Guid { get; protected set; }
+        public List<Guid> DepositsGuides { get; }
 
         public AccountAggregate()
         {
-            Deposits = new List<DepositAggregate>();
+            DepositsGuides = new List<Guid>();
         }
 
         public void Apply(IEvent @event)

@@ -5,7 +5,7 @@ using Core;
 using Moq;
 using Xunit;
 
-namespace AccountModule.Tests
+namespace ModulesTests.AccountModule
 {
     public class CreateAccountCommandHandlerTest
     {
@@ -14,7 +14,8 @@ namespace AccountModule.Tests
         public void TestCanHandle()
         {
             var accountServiceMock = new Mock<IAggregateService<AccountAggregate>>();
-            var commandHandler = new CreateAccountCommandHandler(accountServiceMock.Object);
+            var eventPublisherMock = new Mock<IEventPublisher>();
+            var commandHandler = new CreateAccountCommandHandler(accountServiceMock.Object, eventPublisherMock.Object);
             ICommand command = new CreateAccountCommand(Guid.Empty);
 
             var canHandle = commandHandler.CanHandle(command);
@@ -23,10 +24,11 @@ namespace AccountModule.Tests
         }
 
         [Fact]
-        public void TestIncorrectCommandCheck()
+        public void TestCanHandleFalse()
         {
             var accountServiceMock = new Mock<IAggregateService<AccountAggregate>>();
-            var commandHandler = new CreateAccountCommandHandler(accountServiceMock.Object);
+            var eventPublisherMock = new Mock<IEventPublisher>();
+            var commandHandler = new CreateAccountCommandHandler(accountServiceMock.Object, eventPublisherMock.Object);
             ICommand command = new Mock<ICommand>().Object;
 
             var canHandle = commandHandler.CanHandle(command);
@@ -37,23 +39,21 @@ namespace AccountModule.Tests
         [Fact]
         public void TestCommandHandle()
         {
-            var observerMock = new Mock<IObserver<IEvent>>();
-            observerMock.Setup(o => o.OnNext(It.IsAny<CreateAccountEvent>()));
-
             var accountServiceMock = new Mock<IAggregateService<AccountAggregate>>();
-            accountServiceMock.Setup(m => m.SaveAndPublish(It.IsAny<IEvent>()));
+            
+            var eventPublisherMock = new Mock<IEventPublisher>();
 
-            var commandHandler = new CreateAccountCommandHandler(accountServiceMock.Object);
-            commandHandler.AddObserver(observerMock.Object);
+            eventPublisherMock.Setup(m => m.Publish(It.IsAny<IEvent>()));
+
+            var commandHandler = new CreateAccountCommandHandler(accountServiceMock.Object, eventPublisherMock.Object);
 
             var accountGuid = Guid.NewGuid();
             ICommand command = new CreateAccountCommand(accountGuid);
 
             commandHandler.Handle((CreateAccountCommand)command);
 
-            Assert.Equal(1, accountServiceMock.Invocations.Count);
-            Assert.Equal(accountGuid, ((CreateAccountEvent)accountServiceMock.Invocations[0].Arguments[0]).ItemGuid);
-            observerMock.VerifyAll();
+            Assert.Equal(1, eventPublisherMock.Invocations.Count);
+            Assert.Equal(accountGuid, ((CreateAccountEvent)eventPublisherMock.Invocations[0].Arguments[0]).ItemGuid);
         }
     }
 }

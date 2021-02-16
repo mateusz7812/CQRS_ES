@@ -13,6 +13,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AccountModule", "AccountMod
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DepositModule", "DepositModule\DepositModule.csproj", "{6F782C57-2847-499C-A94E-8046673AA046}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ModulesTests", "ModulesTests\ModulesTests.csproj", "{3DB99BD2-8C30-429D-AC3D-BA002DD297D5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -35,6 +37,10 @@ Global
 		{6F782C57-2847-499C-A94E-8046673AA046}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6F782C57-2847-499C-A94E-8046673AA046}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6F782C57-2847-499C-A94E-8046673AA046}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3DB99BD2-8C30-429D-AC3D-BA002DD297D5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3DB99BD2-8C30-429D-AC3D-BA002DD297D5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3DB99BD2-8C30-429D-AC3D-BA002DD297D5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3DB99BD2-8C30-429D-AC3D-BA002DD297D5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -42,6 +48,7 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{FC210E91-146D-4E2B-96E0-090D6D924F20} = {B052610A-238D-45A7-91B6-F490C13CA8C6}
 		{6F782C57-2847-499C-A94E-8046673AA046} = {B052610A-238D-45A7-91B6-F490C13CA8C6}
+		{3DB99BD2-8C30-429D-AC3D-BA002DD297D5} = {B052610A-238D-45A7-91B6-F490C13CA8C6}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {82BB25EB-CF3D-4F1F-BF8A-1481E328851B}

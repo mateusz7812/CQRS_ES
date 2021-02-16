@@ -10,8 +10,8 @@ namespace Core.Tests
         [Fact]
         public void Test1()
         {
-            var eventStoreMock = new Mock<DefaultEventStore>();
-            var repository = new Repository(eventStoreMock.Object);
+            var eventStoreMock = new Mock<IEventStore>();
+            var repository = new EventRepository(eventStoreMock.Object);
             var accountGuid = Guid.NewGuid();
             var @event = new Mock<IEvent>().Object;
             eventStoreMock.Setup(m => m.FindByItemGuid(It.IsAny<Guid>())).Returns(new List<IEvent> { @event });

@@ -12,17 +12,20 @@ namespace FunctionalTests
         [Fact]
         public void Test1()
         {
-            var accountsRepository = new AccountSqlLiteRepository("accounts");
+            var accountsRepository = new AccountSqlLiteModelRepository("accounts");
             accountsRepository.CreateTable();
 
-            var accountService = new AccountService(accountsRepository);
+            var accountService = new Service<AccountModel>(accountsRepository);
             var createAccountEventHandler = new CreateAccountEventHandler(accountService);
 
             var eventStore = new DefaultEventStore();
-            var eventRepository = new Repository(eventStore);
+            var eventRepository = new EventRepository(eventStore);
             var aggregateFactoryMethod = new AccountAggregateFactoryMethod();
             var accountAggregateService = new AggregateService<AccountAggregate>(eventRepository, aggregateFactoryMethod);
-            var createAccountCommandHandler = new CreateAccountCommandHandler(accountAggregateService);
+
+            var observableEventPublisher = new ObservableEventPublisher(eventRepository);
+
+            var createAccountCommandHandler = new CreateAccountCommandHandler(accountAggregateService, observableEventPublisher);
 
             var commandBusCache = new Cache<ICommand>();
             var commandHandlerFactoryMethod = new HandlerFactoryMethod<ICommand>();
@@ -36,7 +39,7 @@ namespace FunctionalTests
             var eventBus = new Bus<IEvent>(eventHandlerFactoryMethod, eventBusCache);
 
             var busObserverAdapter = new BusObserverAdapter<IEvent>(eventBus);
-            createAccountCommandHandler.AddObserver(busObserverAdapter);
+            observableEventPublisher.AddObserver(busObserverAdapter);
 
             var accountId = Guid.NewGuid();
             var accountCreateCommand = new CreateAccountCommand(accountId);

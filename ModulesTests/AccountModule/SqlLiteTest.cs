@@ -2,7 +2,7 @@ using System;
 using AccountModule.Read;
 using Xunit;
 
-namespace AccountModule.Tests
+namespace ModulesTests.AccountModule
 {
     public class SqlLiteTest
     {
@@ -11,7 +11,7 @@ namespace AccountModule.Tests
         {
             var accountGuid = Guid.NewGuid();
             var account = new AccountModel(accountGuid);
-            var repository = new AccountSqlLiteRepository("accounts");
+            var repository = new AccountSqlLiteModelRepository("accounts");
             repository.CreateTable();
             repository.Save(account);
 
@@ -25,7 +25,7 @@ namespace AccountModule.Tests
         {
             var accountGuid = Guid.NewGuid();
             var account = new AccountModel(accountGuid);
-            var repository = new AccountSqlLiteRepository("accounts");
+            var repository = new AccountSqlLiteModelRepository("accounts");
             repository.CreateTable();
             repository.Save(account);
 

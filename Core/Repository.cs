@@ -3,11 +3,11 @@ using System.Collections.Generic;
 
 namespace Core
 {
-    public class Repository : IRepository
+    public class EventRepository : IEventRepository
     {
         private readonly IEventStore _eventStore;
 
-        public Repository(IEventStore eventStore)
+        public EventRepository(IEventStore eventStore)
         {
             _eventStore = eventStore;
         }

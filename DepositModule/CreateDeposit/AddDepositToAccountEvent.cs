@@ -5,15 +5,17 @@ using Core;
 
 namespace DepositModule.CreateDeposit
 {
-    class AddDepositToAccountEvent: IEvent
+    public class AddDepositToAccountEvent: IEvent
     {
-        public AddDepositToAccountEvent(Guid eventGuid, Guid itemGuid)
+        public AddDepositToAccountEvent(Guid eventGuid, Guid itemGuid, Guid depositId)
         {
             EventGuid = eventGuid;
             ItemGuid = itemGuid;
+            DepositId = depositId;
         }
 
         public Guid EventGuid { get; }
         public Guid ItemGuid { get; }
+        public Guid DepositId { get; }
     }
 }

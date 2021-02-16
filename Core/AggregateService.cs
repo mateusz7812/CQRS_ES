@@ -3,30 +3,25 @@ using System.Collections.Generic;
 
 namespace Core
 {
-    public class AggregateService<T> : AbstractObservable<IEvent>, IAggregateService<T> where T : IAggregate
+    public class AggregateService<T>: IAggregateService<T> where T : IAggregate
     {
-        private readonly IRepository _repository;
+        private readonly IEventRepository _eventRepository;
         private readonly IAggregateFactoryMethod<T> _aggregateFactoryMethod;
 
-        public AggregateService(IRepository repository, IAggregateFactoryMethod<T> aggregateFactoryMethod)
+        public AggregateService(IEventRepository eventRepository, IAggregateFactoryMethod<T> aggregateFactoryMethod)
         {
-            _repository = repository;
+            _eventRepository = eventRepository;
             _aggregateFactoryMethod = aggregateFactoryMethod;
         }
 
         public T Load(Guid aggregateGuid)
         {
             T aggregator = _aggregateFactoryMethod.CreateAggregate();
-            List<IEvent> events = _repository.GetByItemGuid(aggregateGuid);
+            List<IEvent> events = _eventRepository.GetByItemGuid(aggregateGuid);
             aggregator.From(events);
             return aggregator;
         }
 
 
-        public void SaveAndPublish(IEvent @event)
-        {
-            _repository.Save(@event);
-            NotifyObservers(@event);
-        }
     }
 }

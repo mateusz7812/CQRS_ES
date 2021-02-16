@@ -2,26 +2,26 @@
 
 namespace Core
 {
-    public abstract class Service<T> : IService<T> where T : IModel
+    public class Service<T> : IService<T> where T : IModel
     {
-        private readonly IRepository<T> _repository;
+        private readonly IModelRepository<T> _modelRepository;
 
-        protected Service(IRepository<T> repository)
+        public Service(IModelRepository<T> modelRepository)
         {
-            _repository = repository;
+            _modelRepository = modelRepository;
         }
 
-        public virtual void Save(T model)
+        public void Save(T model)
         {
-            _repository.Save(model);
+            _modelRepository.Save(model);
         }
 
-        public virtual T FindById(Guid itemGuid)
+        public T FindById(Guid itemGuid)
         {
-            return _repository.FindById(itemGuid);
+            return _modelRepository.FindById(itemGuid);
         }
 
-        public virtual void Delete(Guid itemGuid)
+        public void Delete(Guid itemGuid)
         {
             throw new NotImplementedException();
         }
