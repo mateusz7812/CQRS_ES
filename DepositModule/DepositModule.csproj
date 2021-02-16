@@ -10,7 +10,9 @@
 
   <ItemGroup>
     <ProjectReference Include="..\AccountModule\AccountModule.csproj" />
+    <ProjectReference Include="..\Commands\Commands.csproj" />
     <ProjectReference Include="..\Core\Core.csproj" />
+    <ProjectReference Include="..\Events\Events.csproj" />
   </ItemGroup>
 
 </Project>

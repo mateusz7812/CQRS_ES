@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using AccountModule.CreateAccount;
 using Core;
+using DepositModule.CreateDeposit;
 
 namespace AccountModule.Write
 {
@@ -19,8 +20,11 @@ namespace AccountModule.Write
         {
             switch (@event)
             {
-                case CreateAccountEvent accountEvent:
-                    Guid = accountEvent.ItemGuid;
+                case CreateAccountEvent createAccountEvent:
+                    Guid = createAccountEvent.ItemGuid;
+                    break;
+                case AddDepositToAccountEvent addDepositToAccountEvent:
+                    DepositsGuides.Add(addDepositToAccountEvent.DepositId);
                     break;
                 default:
                     throw new NotImplementedException();

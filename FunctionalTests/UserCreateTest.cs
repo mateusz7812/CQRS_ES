@@ -1,5 +1,6 @@
 using Core;
 using System;
+using System.Linq;
 using AccountModule.CreateAccount;
 using AccountModule.Read;
 using AccountModule.Write;
@@ -41,11 +42,13 @@ namespace FunctionalTests
             var busObserverAdapter = new BusObserverAdapter<IEvent>(eventBus);
             observableEventPublisher.AddObserver(busObserverAdapter);
 
-            var accountId = Guid.NewGuid();
-            var accountCreateCommand = new CreateAccountCommand(accountId);
+            var accountCreateCommand = new CreateAccountCommand();
 
             commandBus.Add(accountCreateCommand);
             commandBus.HandleNext();
+
+            Assert.Single(eventStore.GetAll);
+            var accountId = eventStore.GetAll.First().ItemGuid;
 
             var events = eventRepository.GetByItemGuid(accountId);
             Assert.Collection(events, @event => Assert.Equal(accountId, @event.ItemGuid));

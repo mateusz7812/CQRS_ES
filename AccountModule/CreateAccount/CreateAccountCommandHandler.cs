@@ -18,9 +18,11 @@ namespace AccountModule.CreateAccount
         public void Handle(ICommand command)
         {
             var createAccountCommand = (CreateAccountCommand)command;
-            var accountGuid = createAccountCommand.AccountGuid;
+            
+            var accountGuid = Guid.NewGuid();
 
-            var createAccountEvent = new CreateAccountEvent(Guid.NewGuid(), accountGuid);
+            var eventGuid = Guid.NewGuid();
+            var createAccountEvent = new CreateAccountEvent(eventGuid, accountGuid);
             _eventPublisher.Publish(createAccountEvent);
         }
 

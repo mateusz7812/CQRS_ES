@@ -16,7 +16,7 @@ namespace ModulesTests.AccountModule
             var accountServiceMock = new Mock<IAggregateService<AccountAggregate>>();
             var eventPublisherMock = new Mock<IEventPublisher>();
             var commandHandler = new CreateAccountCommandHandler(accountServiceMock.Object, eventPublisherMock.Object);
-            ICommand command = new CreateAccountCommand(Guid.Empty);
+            ICommand command = new CreateAccountCommand();
 
             var canHandle = commandHandler.CanHandle(command);
 
@@ -43,17 +43,17 @@ namespace ModulesTests.AccountModule
             
             var eventPublisherMock = new Mock<IEventPublisher>();
 
-            eventPublisherMock.Setup(m => m.Publish(It.IsAny<IEvent>()));
+            eventPublisherMock.Setup(m => m.Publish(It.IsAny<CreateAccountEvent>()));
 
             var commandHandler = new CreateAccountCommandHandler(accountServiceMock.Object, eventPublisherMock.Object);
-
-            var accountGuid = Guid.NewGuid();
-            ICommand command = new CreateAccountCommand(accountGuid);
+            
+            ICommand command = new CreateAccountCommand();
 
             commandHandler.Handle((CreateAccountCommand)command);
 
             Assert.Equal(1, eventPublisherMock.Invocations.Count);
-            Assert.Equal(accountGuid, ((CreateAccountEvent)eventPublisherMock.Invocations[0].Arguments[0]).ItemGuid);
+            eventPublisherMock.VerifyAll();
         }
+
     }
 }

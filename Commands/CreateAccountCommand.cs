@@ -5,11 +5,8 @@ namespace AccountModule.CreateAccount
 {
     public class CreateAccountCommand : ICommand
     {
-        public Guid AccountGuid { get; }
-
-        public CreateAccountCommand(Guid accountGuid)
+        public CreateAccountCommand()
         {
-            AccountGuid = accountGuid;
         }
 
     }

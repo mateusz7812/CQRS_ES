@@ -17,5 +17,6 @@ namespace Core
                     where @event.ItemGuid.Equals(itemGuid)
                     select @event
                 ).ToList();
+        public List<IEvent> GetAll => _events;
     }
 }
