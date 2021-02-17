@@ -14,8 +14,8 @@ namespace AccountModule.CreateAccount
 
         public void Handle(IEvent item)
         {
-            var createAccountEvent = (CreateAccountEvent)item;
-            var account = new AccountModel(createAccountEvent.ItemGuid);
+            var createAccountEvent = (CreateAccountEvent) item;
+            var account = new AccountModel{Guid = createAccountEvent.ItemGuid};
             _accountService.Save(account);
         }
 

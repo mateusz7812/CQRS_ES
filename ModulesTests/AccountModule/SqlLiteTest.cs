@@ -10,7 +10,7 @@ namespace ModulesTests.AccountModule
         public void TestFindById()
         {
             var accountGuid = Guid.NewGuid();
-            var account = new AccountModel(accountGuid);
+            var account = new AccountModel{Guid=accountGuid};
             var repository = new AccountSqlLiteModelRepository("accounts");
             repository.CreateTable();
             repository.Save(account);
@@ -24,7 +24,7 @@ namespace ModulesTests.AccountModule
         public void TestFindAll()
         {
             var accountGuid = Guid.NewGuid();
-            var account = new AccountModel(accountGuid);
+            var account = new AccountModel{Guid=accountGuid};
             var repository = new AccountSqlLiteModelRepository("accounts");
             repository.CreateTable();
             repository.Save(account);

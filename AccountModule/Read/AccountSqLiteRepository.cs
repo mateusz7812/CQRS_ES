@@ -24,7 +24,7 @@ namespace AccountModule.Read
 
         private SQLiteCommand ExecuteCommand(string command)
         {
-            var cmd = new SQLiteCommand(_connection) { CommandText = command };
+            var cmd = new SQLiteCommand(_connection) {CommandText = command};
             cmd.ExecuteNonQuery();
             return cmd;
         }
@@ -49,7 +49,7 @@ namespace AccountModule.Read
                 if (!reader.Read()) return null;
 
                 var id = Guid.Parse(Convert.ToString(reader["id"]));
-                return new AccountModel(id);
+                return new AccountModel {Guid = id};
             }
         }
 
@@ -62,8 +62,9 @@ namespace AccountModule.Read
                 while (reader.Read())
                 {
                     var id = Guid.Parse(Convert.ToString(reader["id"]));
-                    accounts.Add(new AccountModel(id));
+                    accounts.Add(new AccountModel {Guid = id});
                 }
+
                 return accounts;
             }
         }
