@@ -1,8 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using AccountModule.Read;
+using System.Threading.Tasks;
+using FunctionalTests;
 using Models;
 using Xunit;
 
@@ -13,7 +12,8 @@ namespace ReadDB
         [Fact]
         public void TestSaveAndRead()
         {
-            var accountModelDbRepository = new AccountModelDbRepository();
+            var ctxFactoryMethod = new SqLiteCtxFactoryMethod();
+            var accountModelDbRepository = new AccountModelDbRepository(ctxFactoryMethod);
             var accountToSave = new AccountModel
             {
                 Guid = Guid.NewGuid(), 
@@ -23,7 +23,7 @@ namespace ReadDB
             var accountModel = accountModelDbRepository.FindById(accountToSave.Guid);
             Assert.Equal(accountToSave.Guid, accountModel.Guid);
             Assert.Equal(accountToSave.Name, accountModel.Name);
-            var depositModelRepository = new DepositModelRepository();
+            var depositModelRepository = new DepositModelRepository(ctxFactoryMethod);
             var depositToSave = new DepositModel
             {
                 Account = accountModel,

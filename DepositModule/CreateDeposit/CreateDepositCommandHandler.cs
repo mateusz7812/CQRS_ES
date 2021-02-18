@@ -1,10 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Text.Json;
 using AccountModule.Write;
+using Commands;
 using Core;
 using DepositModule.Write;
+using Events;
 
 
 namespace DepositModule.CreateDeposit
@@ -46,11 +45,20 @@ namespace DepositModule.CreateDeposit
             var depositGuid = Guid.NewGuid();
 
             var createDepositEventGuid = Guid.NewGuid();
-            var createDepositEvent = new CreateDepositEvent(createDepositEventGuid, depositGuid);
+            var createDepositEvent = new CreateDepositEvent{
+                EventGuid = createDepositEventGuid, 
+                ItemGuid = depositGuid
+
+            };
             _eventPublisher.Publish(createDepositEvent);
 
             var addDepositToAccountEventGuid = Guid.NewGuid();
-            var addDepositToAccountEvent = new AddDepositToAccountEvent(addDepositToAccountEventGuid, accountId, depositGuid);
+            var addDepositToAccountEvent = new AddDepositToAccountEvent
+            {
+                EventGuid = addDepositToAccountEventGuid,
+                ItemGuid = accountId,
+                DepositId = depositGuid
+            };
             _eventPublisher.Publish(addDepositToAccountEvent);
         }
 

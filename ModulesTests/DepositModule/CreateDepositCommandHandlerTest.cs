@@ -1,10 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using AccountModule.Write;
+using Commands;
 using Core;
 using DepositModule.CreateDeposit;
 using DepositModule.Write;
+using Events;
 using Moq;
 using Xunit;
 
@@ -18,9 +22,10 @@ namespace ModulesTests.DepositModule
             var depositServiceMock = new Mock<IAggregateService<DepositAggregate>>();
             var accountServiceMock = new Mock<IAggregateService<AccountAggregate>>();
             var eventPublisherMock = new Mock<IEventPublisher>();
-            var commandHandler = new CreateDepositCommandHandler(depositServiceMock.Object, accountServiceMock.Object, eventPublisherMock.Object);
+            var commandHandler = new CreateDepositCommandHandler(depositServiceMock.Object, accountServiceMock.Object,
+                eventPublisherMock.Object);
             var accountId = Guid.Empty;
-            ICommand command = new CreateDepositCommand(accountId);
+            ICommand command = new CreateDepositCommand {AccountId = accountId};
 
             var canHandle = commandHandler.CanHandle(command);
 
@@ -33,7 +38,8 @@ namespace ModulesTests.DepositModule
             var depositServiceMock = new Mock<IAggregateService<DepositAggregate>>();
             var accountServiceMock = new Mock<IAggregateService<AccountAggregate>>();
             var eventPublisherMock = new Mock<IEventPublisher>();
-            var commandHandler = new CreateDepositCommandHandler(depositServiceMock.Object, accountServiceMock.Object, eventPublisherMock.Object);
+            var commandHandler = new CreateDepositCommandHandler(depositServiceMock.Object, accountServiceMock.Object,
+                eventPublisherMock.Object);
             var commandMock = Mock.Of<ICommand>();
 
             var canHandle = commandHandler.CanHandle(commandMock);
@@ -59,8 +65,9 @@ namespace ModulesTests.DepositModule
             accountServiceMock.Setup(m => m.Load(It.IsAny<Guid>())).Returns(() => new MockAccountAggregate(accountId));
             var eventPublisherMock = new Mock<IEventPublisher>();
             eventPublisherMock.Setup(m => m.Publish(It.IsAny<IEvent>())).Callback((IEvent e) => publishedEvents.Add(e));
-            var commandHandler = new CreateDepositCommandHandler(depositServiceMock.Object, accountServiceMock.Object, eventPublisherMock.Object);
-            ICommand command = new CreateDepositCommand(accountId);
+            var commandHandler = new CreateDepositCommandHandler(depositServiceMock.Object, accountServiceMock.Object,
+                eventPublisherMock.Object);
+            ICommand command = new CreateDepositCommand{AccountId = accountId};
 
             commandHandler.Handle(command);
 
@@ -70,7 +77,6 @@ namespace ModulesTests.DepositModule
             var second = publishedEvents[1];
             Assert.True(second is AddDepositToAccountEvent);
             Assert.Equal(first.ItemGuid, ((AddDepositToAccountEvent) second).DepositId);
-
         }
 
         [Fact]
@@ -81,9 +87,10 @@ namespace ModulesTests.DepositModule
             var accountServiceMock = new Mock<IAggregateService<AccountAggregate>>();
             var eventPublisherMock = new Mock<IEventPublisher>();
             eventPublisherMock.Setup(m => m.Publish(It.IsAny<IEvent>())).Callback((IEvent e) => publishedEvents.Add(e));
-            var commandHandler = new CreateDepositCommandHandler(depositServiceMock.Object, accountServiceMock.Object, eventPublisherMock.Object);
+            var commandHandler = new CreateDepositCommandHandler(depositServiceMock.Object, accountServiceMock.Object,
+                eventPublisherMock.Object);
             var accountId = Guid.Empty;
-            ICommand command = new CreateDepositCommand(accountId);
+            ICommand command = new CreateDepositCommand{AccountId = accountId};
 
             commandHandler.Handle(command);
 
@@ -91,7 +98,7 @@ namespace ModulesTests.DepositModule
             var publishedEvent = publishedEvents.First();
             Assert.True(publishedEvent is ErrorEvent);
             Assert.Equal("Account Guid empty", ((ErrorEvent) publishedEvent).ErrorMessage);
-            Assert.Equal("{\"AccountId\":\"" + Guid.Empty + "\"}", ((ErrorEvent)publishedEvent).ErrorDataJson);
+            Assert.Equal("{\"AccountId\":\"" + Guid.Empty + "\"}", ((ErrorEvent) publishedEvent).ErrorDataJson);
         }
 
         [Fact]
@@ -103,17 +110,18 @@ namespace ModulesTests.DepositModule
             accountServiceMock.Setup(m => m.Load(It.IsAny<Guid>())).Returns(() => new AccountAggregate());
             var eventPublisherMock = new Mock<IEventPublisher>();
             eventPublisherMock.Setup(m => m.Publish(It.IsAny<IEvent>())).Callback((IEvent e) => publishedEvents.Add(e));
-            var commandHandler = new CreateDepositCommandHandler(depositServiceMock.Object, accountServiceMock.Object, eventPublisherMock.Object);
+            var commandHandler = new CreateDepositCommandHandler(depositServiceMock.Object, accountServiceMock.Object,
+                eventPublisherMock.Object);
             var accountId = Guid.NewGuid();
-            ICommand command = new CreateDepositCommand(accountId);
+            ICommand command = new CreateDepositCommand{AccountId = accountId};
 
             commandHandler.Handle(command);
 
             Assert.Single(publishedEvents);
             var publishedEvent = publishedEvents.First();
             Assert.True(publishedEvent is ErrorEvent);
-            Assert.Equal("Account not found", ((ErrorEvent)publishedEvent).ErrorMessage);
-            Assert.Equal("{\"Guid\":\""+Guid.Empty+"\",\"DepositsGuides\":[]}", ((ErrorEvent)publishedEvent).ErrorDataJson);
+            Assert.Equal("Account not found", ((ErrorEvent) publishedEvent).ErrorMessage);
+            Assert.Equal(JsonSerializer.Serialize(new AccountAggregate()), ((ErrorEvent) publishedEvent).ErrorDataJson);
         }
     }
 }

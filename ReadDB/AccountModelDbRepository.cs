@@ -3,17 +3,22 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.Data.Entity.Migrations;
 using System.Linq;
-using System.Text;
-using AccountModule.Read;
 using Core;
+using Models;
 
 namespace ReadDB
 {
-    class AccountModelDbRepository : IModelRepository<AccountModel>
+    public class AccountModelDbRepository : IModelRepository<AccountModel>
     {
+        private readonly IDbContextFactoryMethod<ModelDbContext> _ctxFactoryMethod;
+        public AccountModelDbRepository(IDbContextFactoryMethod<ModelDbContext> ctxFactoryMethod)
+        {
+            _ctxFactoryMethod = ctxFactoryMethod;
+        }
+
         public void Save(AccountModel item)
         {
-            using var ctx = new ModelDbContext();
+            using var ctx = _ctxFactoryMethod.Create();
             {
                 ctx.Accounts.AddOrUpdate(item);
                 ctx.SaveChanges();
@@ -22,7 +27,7 @@ namespace ReadDB
 
         public AccountModel FindById(Guid itemGuid)
         {
-            using var ctx = new ModelDbContext();
+            using var ctx = _ctxFactoryMethod.Create();
             return ctx.Accounts.Where(m => m.Guid.Equals(itemGuid)).Include(m => m.Deposits).First();
         }
 

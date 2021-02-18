@@ -1,5 +1,6 @@
-﻿using AccountModule.Read;
-using Core;
+﻿using Core;
+using Events;
+using Models;
 
 namespace AccountModule.CreateAccount
 {
@@ -15,7 +16,7 @@ namespace AccountModule.CreateAccount
         public void Handle(IEvent item)
         {
             var createAccountEvent = (CreateAccountEvent) item;
-            var account = new AccountModel{Guid = createAccountEvent.ItemGuid};
+            var account = new AccountModel{Guid = createAccountEvent.ItemGuid, Name = createAccountEvent.AccountName};
             _accountService.Save(account);
         }
 

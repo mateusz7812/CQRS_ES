@@ -1,18 +1,12 @@
 ﻿using System;
 using Core;
 
-namespace AccountModule.CreateAccount
+namespace Events
 {
     public class CreateAccountEvent : IEvent
     {
-
-        public CreateAccountEvent(Guid eventGuid, Guid accountGuid)
-        {
-            EventGuid = eventGuid;
-            ItemGuid = accountGuid;
-        }
-
-        public Guid EventGuid { get; }
-        public Guid ItemGuid { get; }
+        public Guid EventGuid { get; init; }
+        public Guid ItemGuid { get; init; }
+        public string AccountName { get; init; }
     }
 }

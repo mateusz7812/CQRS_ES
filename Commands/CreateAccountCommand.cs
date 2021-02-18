@@ -1,13 +1,9 @@
-﻿using System;
-using Core;
+﻿using Core;
 
-namespace AccountModule.CreateAccount
+namespace Commands
 {
     public class CreateAccountCommand : ICommand
     {
-        public CreateAccountCommand()
-        {
-        }
-
+        public string Name { get; init; }
     }
 }

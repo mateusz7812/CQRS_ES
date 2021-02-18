@@ -1,6 +1,8 @@
 ﻿using System;
 using AccountModule.Write;
+using Commands;
 using Core;
+using Events;
 
 namespace AccountModule.CreateAccount
 {
@@ -18,11 +20,10 @@ namespace AccountModule.CreateAccount
         public void Handle(ICommand command)
         {
             var createAccountCommand = (CreateAccountCommand)command;
-            
             var accountGuid = Guid.NewGuid();
-
             var eventGuid = Guid.NewGuid();
-            var createAccountEvent = new CreateAccountEvent(eventGuid, accountGuid);
+            var accountName = createAccountCommand.Name;
+            var createAccountEvent = new CreateAccountEvent(eventGuid, accountGuid, accountName);
             _eventPublisher.Publish(createAccountEvent);
         }
 

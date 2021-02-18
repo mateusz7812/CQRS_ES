@@ -1,15 +1,10 @@
 ﻿using System;
 using Core;
 
-namespace DepositModule.CreateDeposit
+namespace Commands
 {
     public class CreateDepositCommand: ICommand
     {
-        public Guid AccountId { get; }
-
-        public CreateDepositCommand(Guid accountId)
-        {
-            AccountId = accountId;
-        }
+        public Guid AccountId { get; init; }
     }
 }

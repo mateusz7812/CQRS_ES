@@ -1,9 +1,10 @@
 using Core;
-using System;
 using System.Linq;
 using AccountModule.CreateAccount;
-using AccountModule.Read;
 using AccountModule.Write;
+using Commands;
+using Models;
+using ReadDB;
 using Xunit;
 
 namespace FunctionalTests
@@ -13,9 +14,8 @@ namespace FunctionalTests
         [Fact]
         public void Test1()
         {
-            var accountsRepository = new AccountSqlLiteModelRepository("accounts");
-            accountsRepository.CreateTable();
-
+            var ctxFactoryMethod = new SqLiteCtxFactoryMethod();
+            var accountsRepository = new AccountModelDbRepository(ctxFactoryMethod);
             var accountService = new Service<AccountModel>(accountsRepository);
             var createAccountEventHandler = new CreateAccountEventHandler(accountService);
 
@@ -36,13 +36,14 @@ namespace FunctionalTests
             var eventBusCache = new Cache<IEvent>();
             var eventHandlerFactoryMethod = new HandlerFactoryMethod<IEvent>();
             eventHandlerFactoryMethod.AddHandler(createAccountEventHandler);
-            
             var eventBus = new Bus<IEvent>(eventHandlerFactoryMethod, eventBusCache);
 
             var busObserverAdapter = new BusObserverAdapter<IEvent>(eventBus);
             observableEventPublisher.AddObserver(busObserverAdapter);
 
-            var accountCreateCommand = new CreateAccountCommand();
+            var accountName = "TestName";
+            var accountCreateCommand = new CreateAccountCommand{
+                Name = accountName};
 
             commandBus.Add(accountCreateCommand);
             commandBus.HandleNext();
@@ -57,6 +58,7 @@ namespace FunctionalTests
 
             var account = accountService.FindById(accountId);
             Assert.Equal(accountId, account.Guid);
+            Assert.Equal(accountName, account.Name);
         }
     }
 }

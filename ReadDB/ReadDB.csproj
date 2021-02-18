@@ -6,6 +6,7 @@
 
   <ItemGroup>
     <PackageReference Include="EntityFramework" Version="6.4.4" />
+    <PackageReference Include="SQLite.CodeFirst" Version="1.6.1.31" />
   </ItemGroup>
 
   <ItemGroup>

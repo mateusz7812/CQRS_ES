@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using Core;
-using Models;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Core;
 
-namespace AccountModule.Read
+namespace Models
 {
     public class AccountModel : IModel
     {

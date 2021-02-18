@@ -2,8 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using AccountModule.CreateAccount;
-using AccountModule.Read;
 using Core;
+using Events;
+using Models;
 using Xunit;
 
 namespace ModulesTests.AccountModule
@@ -12,37 +13,31 @@ namespace ModulesTests.AccountModule
     {
         class ServiceMock : IService<AccountModel>
         {
-            
-
             public static List<AccountModel> Saved { get; } = new List<AccountModel>();
-
-            public void Save(AccountModel model)
-            {
-                Saved.Add(model);
-            }
-
-            public AccountModel FindById(Guid itemGuid)
-            {
-                throw new NotImplementedException();
-            }
-
-            public void Delete(Guid itemGuid)
-            {
-                throw new NotImplementedException();
-            }
+            public void Save(AccountModel model) => Saved.Add(model);
+            public AccountModel FindById(Guid itemGuid) => throw new NotImplementedException();
+            public void Delete(Guid itemGuid) => throw new NotImplementedException();
         }
         [Fact]
         public void Test1()
         {
             var accountGuid = Guid.NewGuid();
-            var createAccountEvent = new CreateAccountEvent(Guid.NewGuid(), accountGuid);
+            var accountName = "testName";
+            var createAccountEvent = new CreateAccountEvent{
+                EventGuid = Guid.NewGuid(), 
+                ItemGuid = accountGuid, 
+                AccountName = accountName
+
+            };
             var accountServiceMock = new ServiceMock();
             var eventHandler = new CreateAccountEventHandler(accountServiceMock);
 
             eventHandler.Handle(createAccountEvent);
 
             Assert.Single(ServiceMock.Saved);
-            Assert.True(ServiceMock.Saved.First().Guid.Equals(accountGuid));
+            var accountModel = ServiceMock.Saved.First();
+            Assert.True(accountModel.Guid.Equals(accountGuid));
+            Assert.True(accountModel.Name.Equals(accountName));
         }
     }
 }

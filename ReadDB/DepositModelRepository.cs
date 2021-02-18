@@ -3,17 +3,23 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.Data.Entity.Migrations;
 using System.Linq;
-using System.Text;
 using Core;
 using Models;
 
 namespace ReadDB
 {
-    class DepositModelRepository: IModelRepository<DepositModel>
+    public class DepositModelRepository: IModelRepository<DepositModel>
     {
+        private readonly IDbContextFactoryMethod<ModelDbContext> _ctxFactoryMethod;
+
+        public DepositModelRepository(IDbContextFactoryMethod<ModelDbContext> ctxFactoryMethod)
+        {
+            _ctxFactoryMethod = ctxFactoryMethod;
+        }
+
         public void Save(DepositModel item)
         {
-            using (var ctx = new ModelDbContext())
+            using (var ctx = _ctxFactoryMethod.Create())
             {
                 var test = ctx.Deposits.Create();
                 test.Account = ctx.Accounts.First(m => m.Guid.Equals(item.Account.Guid));
@@ -25,7 +31,7 @@ namespace ReadDB
 
         public DepositModel FindById(Guid itemGuid)
         {
-            using (var ctx = new ModelDbContext())
+            using (var ctx = _ctxFactoryMethod.Create())
             {
                 return ctx.Deposits.Include(m=>m.Account).First(m => m.Guid.Equals(itemGuid));
             }

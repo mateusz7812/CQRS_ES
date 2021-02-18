@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using AccountModule.CreateAccount;
 using Core;
-using DepositModule.CreateDeposit;
+using Events;
 
 namespace AccountModule.Write
 {
     public class AccountAggregate : IAggregate
     {
         public Guid Guid { get; protected set; }
+        public string Name { get; protected set; }
         public List<Guid> DepositsGuides { get; }
 
         public AccountAggregate()
@@ -22,6 +22,7 @@ namespace AccountModule.Write
             {
                 case CreateAccountEvent createAccountEvent:
                     Guid = createAccountEvent.ItemGuid;
+                    Name = createAccountEvent.AccountName;
                     break;
                 case AddDepositToAccountEvent addDepositToAccountEvent:
                     DepositsGuides.Add(addDepositToAccountEvent.DepositId);
