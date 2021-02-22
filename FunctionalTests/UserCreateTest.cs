@@ -4,6 +4,7 @@ using AccountModule.CreateAccount;
 using AccountModule.Write;
 using Commands;
 using Models;
+using Optionals;
 using ReadDB;
 using Xunit;
 
@@ -56,7 +57,7 @@ namespace FunctionalTests
 
             eventBus.HandleNext();
 
-            var account = accountService.FindById(accountId);
+            AccountModel account = accountService.FindById(accountId);
             Assert.Equal(accountId, account.Guid);
             Assert.Equal(accountName, account.Name);
         }

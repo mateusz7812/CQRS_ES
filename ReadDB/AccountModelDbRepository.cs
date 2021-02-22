@@ -5,6 +5,7 @@ using System.Data.Entity.Migrations;
 using System.Linq;
 using Core;
 using Models;
+using Optionals;
 
 namespace ReadDB
 {
@@ -25,13 +26,19 @@ namespace ReadDB
             }
         }
 
-        public AccountModel FindById(Guid itemGuid)
+        public Optional<AccountModel> FindById(Guid itemGuid)
         {
-            using var ctx = _ctxFactoryMethod.Create();
-            return ctx.Accounts.Where(m => m.Guid.Equals(itemGuid)).Include(m => m.Deposits).First();
+            using var ctx = _ctxFactoryMethod.Create(); 
+            IQueryable<AccountModel> accounts = ctx.Accounts.Where(m => m.Guid.Equals(itemGuid)).Include(m => m.Deposits);
+            return accounts.Any() ? accounts.First() : new Optional<AccountModel> {Code = Codes.NotFound};
         }
 
         public List<AccountModel> FindAll()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Delete(Guid guid)
         {
             throw new NotImplementedException();
         }

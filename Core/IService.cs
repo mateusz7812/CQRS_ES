@@ -1,11 +1,12 @@
 ﻿using System;
+using Optionals;
 
 namespace Core
 {
     public interface IService<T> where T : IModel
     {
         void Save(T model);
-        T FindById(Guid itemGuid);
+        Optional<T> FindById(Guid itemGuid);
         void Delete(Guid itemGuid);
 
     }

@@ -1,4 +1,5 @@
 ﻿using System;
+using Optionals;
 
 namespace Core
 {
@@ -16,7 +17,7 @@ namespace Core
             _modelRepository.Save(model);
         }
 
-        public T FindById(Guid itemGuid)
+        public Optional<T> FindById(Guid itemGuid)
         {
             return _modelRepository.FindById(itemGuid);
         }

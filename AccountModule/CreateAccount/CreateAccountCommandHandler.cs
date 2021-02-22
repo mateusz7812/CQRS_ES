@@ -23,7 +23,11 @@ namespace AccountModule.CreateAccount
             var accountGuid = Guid.NewGuid();
             var eventGuid = Guid.NewGuid();
             var accountName = createAccountCommand.Name;
-            var createAccountEvent = new CreateAccountEvent(eventGuid, accountGuid, accountName);
+            var createAccountEvent = new CreateAccountEvent{
+                EventGuid = eventGuid, 
+                ItemGuid = accountGuid, 
+                AccountName = accountName
+            };
             _eventPublisher.Publish(createAccountEvent);
         }
 

@@ -5,6 +5,7 @@ using AccountModule.CreateAccount;
 using Core;
 using Events;
 using Models;
+using Optionals;
 using Xunit;
 
 namespace ModulesTests.AccountModule
@@ -15,7 +16,7 @@ namespace ModulesTests.AccountModule
         {
             public static List<AccountModel> Saved { get; } = new List<AccountModel>();
             public void Save(AccountModel model) => Saved.Add(model);
-            public AccountModel FindById(Guid itemGuid) => throw new NotImplementedException();
+            public Optional<AccountModel> FindById(Guid itemGuid) => throw new NotImplementedException();
             public void Delete(Guid itemGuid) => throw new NotImplementedException();
         }
         [Fact]

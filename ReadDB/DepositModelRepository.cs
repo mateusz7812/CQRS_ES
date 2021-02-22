@@ -5,6 +5,7 @@ using System.Data.Entity.Migrations;
 using System.Linq;
 using Core;
 using Models;
+using Optionals;
 
 namespace ReadDB
 {
@@ -29,7 +30,7 @@ namespace ReadDB
             }
         }
 
-        public DepositModel FindById(Guid itemGuid)
+        public Optional<DepositModel> FindById(Guid itemGuid)
         {
             using (var ctx = _ctxFactoryMethod.Create())
             {
@@ -38,6 +39,11 @@ namespace ReadDB
         }
 
         public List<DepositModel> FindAll()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Delete(Guid guid)
         {
             throw new NotImplementedException();
         }
