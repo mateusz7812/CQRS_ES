@@ -36,37 +36,22 @@ namespace FunctionalTests
             var accountGuid = Guid.NewGuid();
             var tempRepositoryMock = DepositRepositoryMock();
             var dbRepositoryMock = DepositRepositoryMock();
+            dbRepositoryMock.Setup(m => m.Save(It.Is<DepositModel>(d => d.Account == default)))
+                .Throws(new Exception("Account is null"));
             var service = new DepositService(tempRepositoryMock.Object, dbRepositoryMock.Object);
             var depositModel = new DepositModel {Guid = depositGuid};
             service.Save(depositModel);
 
-            tempRepositoryMock.Verify(m => m.FindById(depositGuid));
-            tempRepositoryMock.Verify(m => m.Save(It.Is<DepositModel>(m => m.Guid == depositGuid)));
-            tempRepositoryMock.VerifyNoOtherCalls();
-            dbRepositoryMock.Setup(m => m.FindById(depositGuid));
-            dbRepositoryMock.VerifyNoOtherCalls();
+            DepositModel saved = service.FindById(depositGuid);
+            Assert.Same(depositModel, saved);
 
             depositModel.Account = new AccountModel {Guid = accountGuid};
             service.Save(depositModel);
-
-            tempRepositoryMock.Verify(m => m.FindById(depositGuid));
-            tempRepositoryMock.Verify(m => m.Delete(depositGuid));
-            tempRepositoryMock.VerifyNoOtherCalls();
-            tempRepositoryMock.Verify(m => m.Save(It.Is<DepositModel>(deposit =>
-                deposit.Guid == depositModel.Guid
-                && deposit.Account.Guid == depositModel.Account.Guid)));
-            dbRepositoryMock.Setup(m => m.FindById(depositGuid));
-            dbRepositoryMock.VerifyNoOtherCalls();
-
-            var depositOptional = service.FindById(depositGuid);
-            tempRepositoryMock.VerifyNoOtherCalls();
-            dbRepositoryMock.Verify(m => m.FindById(depositGuid));
-            dbRepositoryMock.VerifyNoOtherCalls();
-
-            Assert.Same(depositOptional.Code, Codes.Success);
-            Assert.True(depositOptional.Item.Guid.Equals(depositGuid));
+            
+            saved = service.FindById(depositGuid);
+            Assert.Same(depositModel, saved);
         }
-
+        
         [Fact]
         public void TestFindNotExistingDeposit()
         {
@@ -77,6 +62,7 @@ namespace FunctionalTests
 
             var depositOptional = service.FindById(depositGuid);
 
+            tempRepositoryMock.Verify(m => m.FindById(depositGuid));
             tempRepositoryMock.VerifyNoOtherCalls();
             dbRepositoryMock.Verify(m => m.FindById(depositGuid));
             dbRepositoryMock.VerifyNoOtherCalls();

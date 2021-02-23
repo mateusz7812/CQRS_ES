@@ -5,6 +5,7 @@ using AccountModule.CreateAccount;
 using Core;
 using Events;
 using Models;
+using Moq;
 using Optionals;
 using Xunit;
 
@@ -19,8 +20,27 @@ namespace ModulesTests.AccountModule
             public Optional<AccountModel> FindById(Guid itemGuid) => throw new NotImplementedException();
             public void Delete(Guid itemGuid) => throw new NotImplementedException();
         }
+
         [Fact]
-        public void Test1()
+        public void TestCanHandle()
+        {
+            var accountServiceMock = new ServiceMock();
+            var eventHandler = new CreateAccountEventHandler(accountServiceMock);
+
+            Assert.True(eventHandler.CanHandle(new CreateAccountEvent()));
+        }
+
+        [Fact]
+        public void TestCanNotHandle()
+        {
+            var accountServiceMock = new ServiceMock();
+            var eventHandler = new CreateAccountEventHandler(accountServiceMock);
+
+            Assert.False(eventHandler.CanHandle(Mock.Of<IEvent>()));
+        }
+
+        [Fact]
+        public void TestHandle()
         {
             var accountGuid = Guid.NewGuid();
             var accountName = "testName";
