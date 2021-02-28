@@ -20,15 +20,24 @@ namespace AccountModule.CreateAccount
         public void Handle(ICommand command)
         {
             var createAccountCommand = (CreateAccountCommand)command;
-            var accountGuid = Guid.NewGuid();
-            var eventGuid = Guid.NewGuid();
+            var accountGuid = GetAccountGuid();
             var accountName = createAccountCommand.Name;
             var createAccountEvent = new CreateAccountEvent{
-                EventGuid = eventGuid, 
                 ItemGuid = accountGuid, 
                 AccountName = accountName
             };
             _eventPublisher.Publish(createAccountEvent);
+        }
+
+        private Guid GetAccountGuid()
+        {
+            while (true)
+            {
+                var guid = Guid.NewGuid();
+                var aggregate = _accountService.Load(guid);
+                if (aggregate.Guid == Guid.Empty) 
+                    return guid;
+            }
         }
 
         public bool CanHandle(ICommand command)

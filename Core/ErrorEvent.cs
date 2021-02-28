@@ -13,7 +13,7 @@ namespace Core
             ErrorMessage = errorMessage;
         }
 
-        public Guid EventGuid { get; }
+        public Guid EventGuid { get; set; }
         public Guid ItemGuid { get; }
         public string ErrorDataJson { get; }
         public string ErrorMessage { get; }

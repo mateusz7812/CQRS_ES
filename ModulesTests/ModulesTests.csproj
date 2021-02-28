@@ -26,4 +26,8 @@
     <ProjectReference Include="..\TransferModule\TransferModule.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="TransferModule\" />
+  </ItemGroup>
+
 </Project>

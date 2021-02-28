@@ -2,7 +2,7 @@
 using ReadDB;
 using SQLite.CodeFirst;
 
-namespace FunctionalTests
+namespace Tests
 {
     class SqLiteDbContext : ModelDbContext
     {

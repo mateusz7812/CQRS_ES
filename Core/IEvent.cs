@@ -4,7 +4,7 @@ namespace Core
 {
     public interface IEvent : IHandleable
     {
-        Guid EventGuid { get; }
+        Guid EventGuid { get; set; }
         Guid ItemGuid { get; }
     }
 }

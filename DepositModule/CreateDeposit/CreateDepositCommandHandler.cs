@@ -42,24 +42,30 @@ namespace DepositModule.CreateDeposit
                 return;
             }
 
-            var depositGuid = Guid.NewGuid();
-
-            var createDepositEventGuid = Guid.NewGuid();
+            var depositGuid = GetDepositGuid();
+            
             var createDepositEvent = new CreateDepositEvent{
-                EventGuid = createDepositEventGuid, 
-                ItemGuid = depositGuid
-
+                ItemGuid = depositGuid,
+                AccountGuid = accountId
             };
             _eventPublisher.Publish(createDepositEvent);
-
-            var addDepositToAccountEventGuid = Guid.NewGuid();
+            
             var addDepositToAccountEvent = new AddDepositToAccountEvent
             {
-                EventGuid = addDepositToAccountEventGuid,
                 ItemGuid = accountId,
                 DepositId = depositGuid
             };
             _eventPublisher.Publish(addDepositToAccountEvent);
+        }
+
+        private Guid GetDepositGuid()
+        {
+            while (true)
+            {
+                var guid = Guid.NewGuid();
+                var aggregate = _depositAggregateService.Load(guid);
+                if (aggregate.Guid == Guid.Empty) return guid;
+            }
         }
 
         public bool CanHandle(ICommand item)

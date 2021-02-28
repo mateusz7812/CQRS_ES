@@ -24,16 +24,5 @@ namespace ModulesTests.DepositModule
 
             Assert.False(eventHandler.CanHandle(Mock.Of<IEvent>()));
         }
-
-        [Fact]
-        public void TestHandle()
-        {
-            var addDepositToAccountEvent = new AddDepositToAccountEvent
-            {
-                EventGuid = Guid.NewGuid(),
-                DepositId = Guid
-            };
-            var eventHandler = new AddDepositToAccountEventHandler();
-        }
     }
 }

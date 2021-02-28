@@ -5,7 +5,7 @@ using Moq;
 using Optionals;
 using Xunit;
 
-namespace FunctionalTests
+namespace Tests
 {
     public class AccountModelServiceTest
     {

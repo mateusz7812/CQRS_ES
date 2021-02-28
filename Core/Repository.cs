@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Optionals;
 
 namespace Core
 {
@@ -15,6 +16,11 @@ namespace Core
         public List<IEvent> GetByItemGuid(Guid itemGuid)
         {
             return _eventStore.FindByItemGuid(itemGuid);
+        }
+
+        public Optional<IEvent> GetByEventGuid(Guid guid)
+        {
+            return _eventStore.FindByEventGuid(guid);
         }
 
         public void Save(IEvent @event)

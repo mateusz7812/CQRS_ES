@@ -5,8 +5,9 @@ using Optionals;
 using ReadDB;
 using Xunit;
 
-namespace FunctionalTests
+namespace Tests
 {
+    [Collection("DbTest")]
     public class EntityModelDbRepositoryTest
     {
         [Fact]

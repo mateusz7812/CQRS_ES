@@ -1,6 +1,6 @@
 ﻿using ReadDB;
 
-namespace FunctionalTests
+namespace Tests
 {
     class SqLiteCtxFactoryMethod : IDbContextFactoryMethod<SqLiteDbContext>
     {

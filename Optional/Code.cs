@@ -15,6 +15,7 @@
     public enum CodesNumbers
     {
         Success,
-        NotFound
+        NotFound,
+        DbError
     }
 }

@@ -7,7 +7,7 @@ namespace DepositModule.CreateDeposit
     {
         public void Handle(IEvent item)
         {
-            throw new System.NotImplementedException();
+            // things to do after deposit creating
         }
 
         public bool CanHandle(IEvent item) => item is AddDepositToAccountEvent;

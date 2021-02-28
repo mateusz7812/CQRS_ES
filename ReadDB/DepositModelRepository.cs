@@ -32,15 +32,21 @@ namespace ReadDB
 
         public Optional<DepositModel> FindById(Guid itemGuid)
         {
-            using (var ctx = _ctxFactoryMethod.Create())
+            try
             {
-                return ctx.Deposits.Include(m=>m.Account).First(m => m.Guid.Equals(itemGuid));
+                using var ctx = _ctxFactoryMethod.Create();
+                return ctx.Deposits.Include(m => m.Account).First(m => m.Guid.Equals(itemGuid));
+            }
+            catch (Exception e)
+            {
+                return Codes.DbError(e.Message);
             }
         }
 
         public List<DepositModel> FindAll()
         {
-            throw new NotImplementedException();
+            using var ctx = _ctxFactoryMethod.Create();
+            return ctx.Deposits.Include(m=>m.Account).ToList();
         }
 
         public void Delete(Guid guid)

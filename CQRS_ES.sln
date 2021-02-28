@@ -5,7 +5,7 @@ VisualStudioVersion = 16.0.30611.23
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Modules", "Modules", "{B052610A-238D-45A7-91B6-F490C13CA8C6}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FunctionalTests", "FunctionalTests\FunctionalTests.csproj", "{3E0F118A-0542-48E1-901C-6DBBE9933353}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tests", "FunctionalTests\Tests.csproj", "{3E0F118A-0542-48E1-901C-6DBBE9933353}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core", "Core\Core.csproj", "{3FFE9ECB-A428-4BA0-BAF7-0C0BEC6FBE2F}"
 EndProject

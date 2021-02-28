@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Optionals;
 
 namespace Core
 {
@@ -7,5 +8,6 @@ namespace Core
     {
         void Save(IEvent @event);
         List<IEvent> GetByItemGuid(Guid aggregateGuid);
+        Optional<IEvent> GetByEventGuid(Guid guid);
     }
 }

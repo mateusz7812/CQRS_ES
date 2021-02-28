@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Optionals;
 
 namespace Core
 {
@@ -13,10 +14,24 @@ namespace Core
 
         public List<IEvent> FindByItemGuid(Guid itemGuid)
             => (
-                    from @event in _events
-                    where @event.ItemGuid.Equals(itemGuid)
-                    select @event
-                ).ToList();
-        public List<IEvent> GetAll => _events;
+                from @event in _events
+                where @event.ItemGuid.Equals(itemGuid)
+                select @event
+            ).ToList();
+
+        public Optional<IEvent> FindByEventGuid(Guid guid)
+        {
+            var events = (from @event in _events
+                where @event.EventGuid.Equals(guid)
+                select @event).ToList();
+            return events.Count switch
+            {
+                0 => Codes.NotFound,
+                1 => new Optional<IEvent> {Item = events.First(), Code = Codes.Success},
+                _ => throw new Exception("Two events with same ids")
+            };
+        }
+
+        public List<IEvent> AllEvents => _events;
     }
 }
