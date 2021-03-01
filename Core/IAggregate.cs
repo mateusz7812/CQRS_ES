@@ -9,11 +9,5 @@ namespace Core
         void Apply(IEvent @event);
 
         void From(List<IEvent> events);
-        /*{
-            foreach (IEvent @event in events)
-            {
-                Apply(@event);
-            }
-        };*/
     }
 }

@@ -1,29 +1,29 @@
 ﻿using System;
-using AccountModule.Write;
 using Commands;
 using Core;
 using Events;
 
 namespace AccountModule.CreateAccount
 {
-    public class CreateAccountCommandHandler : IHandler<ICommand>
+    public class CreateAccountCommandHandler : AbstractCommandHandler<CreateAccountCommand>
     {
-        private readonly IAggregateService<AccountAggregate> _accountService;
-        private readonly IEventPublisher _eventPublisher;
+        private readonly IAggregateService<IAggregate> _accountService;
 
-        public CreateAccountCommandHandler(IAggregateService<AccountAggregate> accountService, IEventPublisher eventPublisher)
+        public CreateAccountCommandHandler(IAggregateService<IAggregate> accountService,
+            IEventPublisher eventPublisher) :
+            base(eventPublisher)
         {
             _accountService = accountService;
-            _eventPublisher = eventPublisher;
         }
 
-        public void Handle(ICommand command)
+        public override void Handle(ICommand command)
         {
-            var createAccountCommand = (CreateAccountCommand)command;
+            var createAccountCommand = (CreateAccountCommand) command;
             var accountGuid = GetAccountGuid();
             var accountName = createAccountCommand.Name;
-            var createAccountEvent = new CreateAccountEvent{
-                ItemGuid = accountGuid, 
+            var createAccountEvent = new CreateAccountEvent
+            {
+                ItemGuid = accountGuid,
                 AccountName = accountName
             };
             _eventPublisher.Publish(createAccountEvent);
@@ -35,14 +35,9 @@ namespace AccountModule.CreateAccount
             {
                 var guid = Guid.NewGuid();
                 var aggregate = _accountService.Load(guid);
-                if (aggregate.Guid == Guid.Empty) 
+                if (aggregate.Guid == Guid.Empty)
                     return guid;
             }
-        }
-
-        public bool CanHandle(ICommand command)
-        {
-            return command is CreateAccountCommand;
         }
     }
 }

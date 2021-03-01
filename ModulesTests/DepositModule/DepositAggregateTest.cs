@@ -1,5 +1,4 @@
 ﻿using System;
-using Core;
 using DepositModule.Write;
 using Events;
 using Xunit;

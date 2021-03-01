@@ -9,7 +9,7 @@ using Optionals;
 
 namespace ReadDB
 {
-    public class DepositModelRepository: IModelRepository<DepositModel>
+    public class DepositModelRepository : IModelRepository<DepositModel>
     {
         private readonly IDbContextFactoryMethod<ModelDbContext> _ctxFactoryMethod;
 
@@ -20,33 +20,28 @@ namespace ReadDB
 
         public void Save(DepositModel item)
         {
-            using (var ctx = _ctxFactoryMethod.Create())
-            {
-                var test = ctx.Deposits.Create();
-                test.Account = ctx.Accounts.First(m => m.Guid.Equals(item.Account.Guid));
-                test.Guid = item.Guid;
-                ctx.Deposits.AddOrUpdate(test);
-                ctx.SaveChanges();
-            }
+            using var ctx = _ctxFactoryMethod.Create();
+            var model = ctx.Deposits.Create();
+            var accounts = ctx.Accounts.Where(m => m.Guid.Equals(item.Account.Guid));
+            if (accounts.Count() != 1) 
+                return;
+            var account = accounts.First();
+            model.Account = account;
+            model.Guid = item.Guid;
+            ctx.Deposits.AddOrUpdate(model);
+            ctx.SaveChanges();
         }
 
         public Optional<DepositModel> FindById(Guid itemGuid)
         {
-            try
-            {
-                using var ctx = _ctxFactoryMethod.Create();
-                return ctx.Deposits.Include(m => m.Account).First(m => m.Guid.Equals(itemGuid));
-            }
-            catch (Exception e)
-            {
-                return Codes.DbError(e.Message);
-            }
+            using var ctx = _ctxFactoryMethod.Create();
+            return ctx.Deposits.Include(m => m.Account).First(m => m.Guid.Equals(itemGuid));
         }
 
         public List<DepositModel> FindAll()
         {
             using var ctx = _ctxFactoryMethod.Create();
-            return ctx.Deposits.Include(m=>m.Account).ToList();
+            return ctx.Deposits.Include(m => m.Account).ToList();
         }
 
         public void Delete(Guid guid)

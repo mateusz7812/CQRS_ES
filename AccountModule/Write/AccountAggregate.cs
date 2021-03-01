@@ -5,9 +5,8 @@ using Events;
 
 namespace AccountModule.Write
 {
-    public class AccountAggregate : IAggregate
+    public class AccountAggregate : AbstractAggregate
     {
-        public Guid Guid { get; protected set; }
         public string Name { get; protected set; }
         public List<Guid> DepositsGuides { get; }
 
@@ -16,7 +15,7 @@ namespace AccountModule.Write
             DepositsGuides = new List<Guid>();
         }
 
-        public void Apply(IEvent @event)
+        public override void Apply(IEvent @event)
         {
             switch (@event)
             {
@@ -29,15 +28,6 @@ namespace AccountModule.Write
                     break;
                 default:
                     throw new NotImplementedException();
-            }
-        }
-
-
-        public void From(List<IEvent> events)
-        {
-            foreach (var @event in events)
-            {
-                Apply(@event);
             }
         }
     }

@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using Optionals;
 
 namespace Core
@@ -19,12 +21,29 @@ namespace Core
 
         public Optional<T> FindById(Guid itemGuid)
         {
-            return _modelRepository.FindById(itemGuid);
+            try
+            {
+                return _modelRepository.FindById(itemGuid);
+            }
+            catch (Exception e)
+            {
+                return Codes.DbError(e.Message);
+            }
         }
 
         public void Delete(Guid itemGuid)
         {
             throw new NotImplementedException();
+        }
+
+        public List<T> FindAll()
+        {
+            return _modelRepository.FindAll();
+        }
+
+        public List<T> FindAll(Func<T, bool> func)
+        {
+            return FindAll().Where(func).ToList();
         }
     }
 }

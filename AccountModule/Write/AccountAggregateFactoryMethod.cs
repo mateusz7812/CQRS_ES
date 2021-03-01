@@ -6,7 +6,7 @@ namespace AccountModule.Write
     {
         public AccountAggregate CreateAggregate()
         {
-            return new AccountAggregate();
+            return new();
         }
     }
 }

@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.Json;
-using System.Text.Json.Serialization;
 using AccountModule.Write;
 using Commands;
 using Core;
@@ -20,7 +19,7 @@ namespace ModulesTests.DepositModule
         public void TestCanHandle()
         {
             var depositServiceMock = new Mock<IAggregateService<DepositAggregate>>();
-            var accountServiceMock = new Mock<IAggregateService<AccountAggregate>>();
+            var accountServiceMock = new Mock<IAggregateService<IAggregate>>();
             var eventPublisherMock = new Mock<IEventPublisher>();
             var commandHandler = new CreateDepositCommandHandler(depositServiceMock.Object, accountServiceMock.Object,
                 eventPublisherMock.Object);
@@ -36,7 +35,7 @@ namespace ModulesTests.DepositModule
         public void TestCanHandleFalse()
         {
             var depositServiceMock = new Mock<IAggregateService<DepositAggregate>>();
-            var accountServiceMock = new Mock<IAggregateService<AccountAggregate>>();
+            var accountServiceMock = new Mock<IAggregateService<IAggregate>>();
             var eventPublisherMock = new Mock<IEventPublisher>();
             var commandHandler = new CreateDepositCommandHandler(depositServiceMock.Object, accountServiceMock.Object,
                 eventPublisherMock.Object);
@@ -47,11 +46,16 @@ namespace ModulesTests.DepositModule
             Assert.False(canHandle);
         }
 
-        class MockAccountAggregate : AccountAggregate
+        class MockAggregate : AbstractAggregate
         {
-            public MockAccountAggregate(Guid guid)
+            public MockAggregate(Guid guid)
             {
                 Guid = guid;
+            }
+
+            public override void Apply(IEvent @event)
+            {
+                throw new NotImplementedException();
             }
         }
 
@@ -63,8 +67,8 @@ namespace ModulesTests.DepositModule
             var depositServiceMock = new Mock<IAggregateService<DepositAggregate>>();
             depositServiceMock.Setup(m => m.Load(It.IsAny<Guid>())).Returns((Guid guid) => new DepositAggregate());
                
-            var accountServiceMock = new Mock<IAggregateService<AccountAggregate>>();
-            accountServiceMock.Setup(m => m.Load(It.IsAny<Guid>())).Returns(() => new MockAccountAggregate(accountId));
+            var accountServiceMock = new Mock<IAggregateService<IAggregate>>();
+            accountServiceMock.Setup(m => m.Load(It.IsAny<Guid>())).Returns(() => new MockAggregate(accountId));
             var eventPublisherMock = new Mock<IEventPublisher>();
             eventPublisherMock.Setup(m => m.Publish(It.IsAny<IEvent>())).Callback((IEvent e) => publishedEvents.Add(e));
             var commandHandler = new CreateDepositCommandHandler(depositServiceMock.Object, accountServiceMock.Object,
@@ -92,7 +96,7 @@ namespace ModulesTests.DepositModule
         {
             var publishedEvents = new List<IEvent>();
             var depositServiceMock = new Mock<IAggregateService<DepositAggregate>>();
-            var accountServiceMock = new Mock<IAggregateService<AccountAggregate>>();
+            var accountServiceMock = new Mock<IAggregateService<IAggregate>>();
             var eventPublisherMock = new Mock<IEventPublisher>();
             eventPublisherMock.Setup(m => m.Publish(It.IsAny<IEvent>())).Callback((IEvent e) => publishedEvents.Add(e));
             var commandHandler = new CreateDepositCommandHandler(depositServiceMock.Object, accountServiceMock.Object,
@@ -114,7 +118,7 @@ namespace ModulesTests.DepositModule
         {
             var publishedEvents = new List<IEvent>();
             var depositServiceMock = new Mock<IAggregateService<DepositAggregate>>();
-            var accountServiceMock = new Mock<IAggregateService<AccountAggregate>>();
+            var accountServiceMock = new Mock<IAggregateService<IAggregate>>();
             accountServiceMock.Setup(m => m.Load(It.IsAny<Guid>())).Returns(() => new AccountAggregate());
             var eventPublisherMock = new Mock<IEventPublisher>();
             eventPublisherMock.Setup(m => m.Publish(It.IsAny<IEvent>())).Callback((IEvent e) => publishedEvents.Add(e));
@@ -152,8 +156,8 @@ namespace ModulesTests.DepositModule
                 aggregate.Apply(new CreateDepositEvent { ItemGuid = guid });
                 return aggregate;
             });
-            var accountServiceMock = new Mock<IAggregateService<AccountAggregate>>();
-            accountServiceMock.Setup(m => m.Load(It.IsAny<Guid>())).Returns(() => new MockAccountAggregate(accountId));
+            var accountServiceMock = new Mock<IAggregateService<IAggregate>>();
+            accountServiceMock.Setup(m => m.Load(It.IsAny<Guid>())).Returns(() => new MockAggregate(accountId));
             var eventPublisherMock = new Mock<IEventPublisher>();
             eventPublisherMock.Setup(m => m.Publish(It.IsAny<IEvent>())).Callback((IEvent e) => publishedEvents.Add(e));
             var commandHandler = new CreateDepositCommandHandler(depositServiceMock.Object, accountServiceMock.Object,

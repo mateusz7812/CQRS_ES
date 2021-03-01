@@ -21,6 +21,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\AccountModule\AccountModule.csproj" />
+    <ProjectReference Include="..\AtmModule\AtmModule.csproj" />
     <ProjectReference Include="..\Core\Core.csproj" />
     <ProjectReference Include="..\DepositModule\DepositModule.csproj" />
     <ProjectReference Include="..\TransferModule\TransferModule.csproj" />

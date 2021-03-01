@@ -1,10 +1,7 @@
 ﻿using System;
-using System.Diagnostics.Tracing;
 using Moq;
-using Newtonsoft.Json;
 using Optionals;
 using Xunit;
-using JsonSerializer = System.Text.Json.JsonSerializer;
 
 namespace Core.Tests
 {

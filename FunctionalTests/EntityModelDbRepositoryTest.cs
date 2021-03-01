@@ -14,7 +14,7 @@ namespace Tests
         public void TestSaveAndRead()
         {
             var ctxFactoryMethod = new SqLiteCtxFactoryMethod();
-            var accountModelDbRepository = new AccountModelDbRepository(ctxFactoryMethod);
+            var accountModelDbRepository = new AccountModelRepository(ctxFactoryMethod);
             var accountToSave = new AccountModel
             {
                 Guid = Guid.NewGuid(),
@@ -43,7 +43,7 @@ namespace Tests
         public void TestGetNotExistingAccount()
         {
             var ctxFactoryMethod = new SqLiteCtxFactoryMethod();
-            var accountModelDbRepository = new AccountModelDbRepository(ctxFactoryMethod);
+            var accountModelDbRepository = new AccountModelRepository(ctxFactoryMethod);
 
             Optional<AccountModel> accountModelOptional = accountModelDbRepository.FindById(Guid.NewGuid());
             

@@ -1,29 +1,28 @@
 ﻿using System;
-using AccountModule.Write;
 using Commands;
 using Core;
 using DepositModule.Write;
 using Events;
 
-
 namespace DepositModule.CreateDeposit
 {
-    public class CreateDepositCommandHandler : IHandler<ICommand>
+    public class CreateDepositCommandHandler : AbstractCommandHandler<CreateDepositCommand>
     {
         private readonly IAggregateService<DepositAggregate> _depositAggregateService;
-        private readonly IAggregateService<AccountAggregate> _accountAggregateService;
+        private readonly IAggregateService<IAggregate> _accountAggregateService;
         private readonly IEventPublisher _eventPublisher;
 
         public CreateDepositCommandHandler(IAggregateService<DepositAggregate> depositAggregateService,
-            IAggregateService<AccountAggregate> accountAggregateService,
-            IEventPublisher eventPublisher)
+            IAggregateService<IAggregate> accountAggregateService,
+            IEventPublisher eventPublisher): 
+            base(eventPublisher)
         {
             _depositAggregateService = depositAggregateService;
             _accountAggregateService = accountAggregateService;
             _eventPublisher = eventPublisher;
         }
 
-        public void Handle(ICommand item)
+        public override void Handle(ICommand item)
         {
             var createDepositCommand = (CreateDepositCommand) item;
             var accountId = createDepositCommand.AccountId;
@@ -66,11 +65,6 @@ namespace DepositModule.CreateDeposit
                 var aggregate = _depositAggregateService.Load(guid);
                 if (aggregate.Guid == Guid.Empty) return guid;
             }
-        }
-
-        public bool CanHandle(ICommand item)
-        {
-            return item is CreateDepositCommand;
         }
     }
 }

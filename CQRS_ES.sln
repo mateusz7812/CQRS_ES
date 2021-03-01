@@ -29,6 +29,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TransferModule", "TransferM
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Optionals", "Optional\Optionals.csproj", "{E61A3500-0D1B-4AC0-A781-C79FF49BFFC8}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AtmModule", "AtmModule\AtmModule.csproj", "{879CB135-52C7-422A-AE93-80AA31D830E4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -83,6 +85,10 @@ Global
 		{E61A3500-0D1B-4AC0-A781-C79FF49BFFC8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E61A3500-0D1B-4AC0-A781-C79FF49BFFC8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E61A3500-0D1B-4AC0-A781-C79FF49BFFC8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{879CB135-52C7-422A-AE93-80AA31D830E4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{879CB135-52C7-422A-AE93-80AA31D830E4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{879CB135-52C7-422A-AE93-80AA31D830E4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{879CB135-52C7-422A-AE93-80AA31D830E4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -92,6 +98,7 @@ Global
 		{6F782C57-2847-499C-A94E-8046673AA046} = {B052610A-238D-45A7-91B6-F490C13CA8C6}
 		{3DB99BD2-8C30-429D-AC3D-BA002DD297D5} = {B052610A-238D-45A7-91B6-F490C13CA8C6}
 		{9F9FB388-E5CF-4CDD-B4BA-7AF86E387D61} = {B052610A-238D-45A7-91B6-F490C13CA8C6}
+		{879CB135-52C7-422A-AE93-80AA31D830E4} = {B052610A-238D-45A7-91B6-F490C13CA8C6}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {82BB25EB-CF3D-4F1F-BF8A-1481E328851B}

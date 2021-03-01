@@ -4,6 +4,7 @@ using AccountModule.CreateAccount;
 using AccountModule.Write;
 using Commands;
 using Core;
+using Currencies;
 using DepositModule.CreateDeposit;
 using DepositModule.Write;
 using Models;
@@ -23,32 +24,75 @@ namespace Tests
         }
 
         [Fact]
-        public void Test()
+        public void UserCreateTest()
         {
-            var accountName = "TestName";
+            const string accountName = "TestName";
+            var accountCreateCommand = new CreateAccountCommand {Name = accountName};
 
-            _env.CommandBus.Add(new CreateAccountCommand {Name = accountName});
-            _env.CommandBus.HandleNext();
-            _env.EventBus.HandleNext();
-
-            var allAccounts = _env.AccountsRepository.FindAll();
+            _env.HandleCommand(accountCreateCommand);
+            
+            var allAccounts = _env.AccountModelService.FindAll();
             Assert.Single(allAccounts);
-            var accountId = allAccounts.First().Guid;
+            var account = allAccounts.First();
+            Assert.NotEqual(Guid.Empty, account.Guid);
+            Assert.Equal(accountName, account.Name);
+            Assert.Empty(account.Deposits);
+        }
 
-            var createDepositCommand = new CreateDepositCommand {AccountId = accountId};
-            _env.HandleCommand(createDepositCommand);
+        [Fact]
+        public void CreateDepositTest()
+        {
+            _env.HandleCommand(new CreateAccountCommand { Name = "TestName" });
+            var accountId = _env.AccountModelService.FindAll().First().Guid;
 
-            var findByItemGuid = _env.DepositRepository.FindAll();
-            Assert.Single(findByItemGuid);
-            var depositModel = findByItemGuid.First();
+            _env.HandleCommand(new CreateDepositCommand { AccountId = accountId });
 
+            var allDeposits = _env.DepositModelService.FindAll();
+            Assert.Single(allDeposits);
+            var depositModel = allDeposits.First();
             Assert.Equal(accountId, depositModel.Account.Guid);
             var depositId = depositModel.Guid;
-
-            AccountModel accountModel = _env.AccountsRepository.FindById(accountId);
+            AccountModel accountModel = _env.AccountModelService.FindById(accountId);
             var deposits = accountModel.Deposits;
             Assert.Single(deposits);
             Assert.Equal(depositId, deposits.First().Guid);
+        }
+
+        [Fact]
+        public void TransferMoneyTest()
+        {
+            var firstName = "first";
+            _env.HandleCommand(new CreateAccountCommand { Name = firstName });
+            var firstAccountGuid = _env.AccountModelService.FindAll(model => model.Name == firstName).First().Guid;
+            _env.HandleCommand(new CreateDepositCommand { AccountId = firstAccountGuid });
+
+            var secondName = "second";
+            _env.HandleCommand(new CreateAccountCommand { Name = secondName });
+            var secondAccountGuid = _env.AccountModelService.FindAll(model => model.Name == secondName).First().Guid;
+            _env.HandleCommand(new CreateDepositCommand { AccountId = secondAccountGuid });
+
+            var firstDepositId = _env.AccountModelService.FindById(firstAccountGuid).Item.Deposits.First().Guid;
+            var dollarToTransferOnDepositByAtm = Currencies.Dollars.Of(100.10);
+
+            _env.HandleCommand(new CreateAtmCommand());
+            var atmId = _env.AtmModelService.FindAll().First().Guid;
+
+            _env.HandleCommand(new TransferOnDepositByAtmCommand{AtmId = atmId, DepositId = firstDepositId, Currency = dollarToTransferOnDepositByAtm});
+            DepositModel firstDepositToCheckPayByAtm = _env.DepositModelService.FindById(firstDepositId);
+            Assert.Equal(dollarToTransferOnDepositByAtm.CurrencyValue, firstDepositToCheckPayByAtm.CurrencyValue);
+            Assert.Equal(dollarToTransferOnDepositByAtm.CurrencyType, firstDepositToCheckPayByAtm.CurrencyType);
+
+            var dollarToTransferOnDepositFromDeposit = Currencies.Dollars.Of(20.02);
+            var secondDepositId = _env.AccountModelService.FindById(secondAccountGuid).Item.Deposits.First().Guid;
+            _env.HandleCommand(new TransferOnDepositFromDepositCommand{SourceDepositId = firstDepositId, DestinationDepositId = secondDepositId, Currency = dollarToTransferOnDepositFromDeposit});
+
+            DepositModel firstDepositToTestPayFromDeposit = _env.DepositModelService.FindById(firstDepositId);
+            DepositModel secondDepositToTestPayFromDeposit = _env.DepositModelService.FindById(secondDepositId);
+
+            Assert.Equal(dollarToTransferOnDepositByAtm.CurrencyValue - dollarToTransferOnDepositFromDeposit.CurrencyValue, firstDepositToTestPayFromDeposit.CurrencyValue);
+            Assert.Equal(CurrenciesEnum.USD, firstDepositToTestPayFromDeposit.CurrencyType);
+            Assert.Equal(dollarToTransferOnDepositFromDeposit.CurrencyValue, secondDepositToTestPayFromDeposit.CurrencyValue);
+            Assert.Equal(dollarToTransferOnDepositFromDeposit.CurrencyType, secondDepositToTestPayFromDeposit.CurrencyType);
         }
     }
 
@@ -71,16 +115,21 @@ namespace Tests
         private readonly DefaultEventStore _eventStore;
 
         //Repositories
-        public AccountModelDbRepository AccountsRepository;
-        public DepositModelRepository DepositRepository;
+        private AccountModelRepository _accountRepository;
+        private DepositModelRepository _depositRepository;
         private EventRepository _eventRepository;
+
+        //Model services
+        public Service<AccountModel> AccountModelService;
+        public Service<DepositModel> DepositModelService;
+        public Service<AtmModel> AtmModelService;
 
         //Event handlers
         private CreateAccountEventHandler _createAccountEventHandler;
         private CreateDepositEventHandler _createDepositEventHandler;
         private AddDepositToAccountEventHandler _addDepositToAccountEventHandler;
 
-        //Aggregates
+        //Aggregate services
         private AggregateService<AccountAggregate> _accountAggregateService;
         private AggregateService<DepositAggregate> _depositAggregateService;
 
@@ -92,25 +141,25 @@ namespace Tests
         private readonly ObservableEventPublisher _observableEventPublisher;
 
         //Buses
-        public Bus<ICommand> CommandBus;
-        public Bus<IEvent> EventBus;
+        private Bus<ICommand> _commandBus;
+        private Bus<IEvent> _eventBus;
 
 
 
         private void SetEventHandlers()
         {
-            var accountService = new Service<AccountModel>(AccountsRepository);
-            var depositService = new Service<DepositModel>(DepositRepository);
+            AccountModelService = new Service<AccountModel>(_accountRepository);
+            DepositModelService = new Service<DepositModel>(_depositRepository);
 
-            _createAccountEventHandler = new CreateAccountEventHandler(accountService);
-            _createDepositEventHandler = new CreateDepositEventHandler(depositService);
+            _createAccountEventHandler = new CreateAccountEventHandler(AccountModelService);
+            _createDepositEventHandler = new CreateDepositEventHandler(DepositModelService);
             _addDepositToAccountEventHandler = new AddDepositToAccountEventHandler();
         }
 
         private void SetRepositories()
         {
-            AccountsRepository = new AccountModelDbRepository(_ctxFactoryMethod);
-            DepositRepository = new DepositModelRepository(_ctxFactoryMethod);
+            _accountRepository = new AccountModelRepository(_ctxFactoryMethod);
+            _depositRepository = new DepositModelRepository(_ctxFactoryMethod);
             _eventRepository = new EventRepository(_eventStore);
         }
 
@@ -140,25 +189,25 @@ namespace Tests
             var commandHandlerFactoryMethod = new HandlerFactoryMethod<ICommand>();
             commandHandlerFactoryMethod.AddHandler(_createAccountCommandHandler);
             commandHandlerFactoryMethod.AddHandler(_createDepositCommandHandler);
-            CommandBus = new Bus<ICommand>(commandHandlerFactoryMethod, commandBusCache);
+            _commandBus = new Bus<ICommand>(commandHandlerFactoryMethod, commandBusCache);
 
             var eventBusCache = new Cache<IEvent>();
             var eventHandlerFactoryMethod = new HandlerFactoryMethod<IEvent>();
             eventHandlerFactoryMethod.AddHandler(_createAccountEventHandler);
             eventHandlerFactoryMethod.AddHandler(_createDepositEventHandler);
             eventHandlerFactoryMethod.AddHandler(_addDepositToAccountEventHandler);
-            EventBus = new Bus<IEvent>(eventHandlerFactoryMethod, eventBusCache);
+            _eventBus = new Bus<IEvent>(eventHandlerFactoryMethod, eventBusCache);
 
-            var busObserverAdapter = new BusObserverAdapter<IEvent>(EventBus);
+            var busObserverAdapter = new BusObserverAdapter<IEvent>(_eventBus);
             _observableEventPublisher.AddObserver(busObserverAdapter);
         }
 
-        public void HandleCommand(CreateDepositCommand createDepositCommand)
+        public void HandleCommand(ICommand command)
         {
-            CommandBus.Add(createDepositCommand);
-            CommandBus.HandleNext();
-            while (!EventBus.IsBusEmpty)
-                EventBus.HandleNext();
+            _commandBus.Add(command);
+            _commandBus.HandleNext();
+            while (!_eventBus.IsBusEmpty)
+                _eventBus.HandleNext();
         }
 
         public void Dispose()
