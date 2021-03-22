@@ -1,6 +1,6 @@
 ﻿namespace Core
 {
-    public abstract class AbstractCommandHandler<T>: IHandler<ICommand> where T:ICommand
+    public abstract class AbstractCommandHandler<T>: ICommandHandler<T> where T:ICommand
     {
         protected readonly IEventPublisher _eventPublisher;
 

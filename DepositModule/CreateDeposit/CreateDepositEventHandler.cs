@@ -4,7 +4,7 @@ using Models;
 
 namespace DepositModule.CreateDeposit
 {
-    public class CreateDepositEventHandler: IHandler<IEvent>
+    public class CreateDepositEventHandler: AbstractEventHandler<CreateDepositEvent>
     {
         private readonly IService<DepositModel> _depositService;
 
@@ -13,7 +13,7 @@ namespace DepositModule.CreateDeposit
             _depositService = depositService;
         }
 
-        public void Handle(IEvent item)
+        public override void Handle(IEvent item)
         {
             var createDepositEvent = (CreateDepositEvent) item;
             var deposit = new DepositModel
@@ -24,6 +24,5 @@ namespace DepositModule.CreateDeposit
             _depositService.Save(deposit);
         }
 
-        public bool CanHandle(IEvent item) => item is CreateDepositEvent;
     }
 }

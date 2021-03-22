@@ -1,10 +1,9 @@
 ﻿using System.Data.Entity;
-using ReadDB;
 using SQLite.CodeFirst;
 
-namespace Tests
+namespace ReadDB
 {
-    class SqLiteDbContext : ModelDbContext
+    public class SqLiteDbContext : ModelDbContext
     {
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {

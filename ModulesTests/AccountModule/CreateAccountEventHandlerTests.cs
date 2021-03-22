@@ -19,6 +19,8 @@ namespace ModulesTests.AccountModule
             public void Save(AccountModel model) => Saved.Add(model);
             public Optional<AccountModel> FindById(Guid itemGuid) => throw new NotImplementedException();
             public void Delete(Guid itemGuid) => throw new NotImplementedException();
+            public List<AccountModel> FindAll() => throw new NotImplementedException();
+            public List<AccountModel> FindAll(Func<AccountModel, bool> func) => throw new NotImplementedException();
         }
 
         [Fact]

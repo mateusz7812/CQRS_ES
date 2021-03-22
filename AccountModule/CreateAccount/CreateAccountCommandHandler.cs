@@ -1,4 +1,5 @@
 ﻿using System;
+using AccountModule.Write;
 using Commands;
 using Core;
 using Events;
@@ -9,7 +10,7 @@ namespace AccountModule.CreateAccount
     {
         private readonly IAggregateService<IAggregate> _accountService;
 
-        public CreateAccountCommandHandler(IAggregateService<IAggregate> accountService,
+        public CreateAccountCommandHandler(IAggregateService<AccountAggregate> accountService,
             IEventPublisher eventPublisher) :
             base(eventPublisher)
         {

@@ -19,7 +19,7 @@ namespace ModulesTests.DepositModule
         public void TestCanHandle()
         {
             var depositServiceMock = new Mock<IAggregateService<DepositAggregate>>();
-            var accountServiceMock = new Mock<IAggregateService<IAggregate>>();
+            var accountServiceMock = new Mock<IAggregateService<AccountAggregate>>();
             var eventPublisherMock = new Mock<IEventPublisher>();
             var commandHandler = new CreateDepositCommandHandler(depositServiceMock.Object, accountServiceMock.Object,
                 eventPublisherMock.Object);
@@ -35,7 +35,7 @@ namespace ModulesTests.DepositModule
         public void TestCanHandleFalse()
         {
             var depositServiceMock = new Mock<IAggregateService<DepositAggregate>>();
-            var accountServiceMock = new Mock<IAggregateService<IAggregate>>();
+            var accountServiceMock = new Mock<IAggregateService<AccountAggregate>>();
             var eventPublisherMock = new Mock<IEventPublisher>();
             var commandHandler = new CreateDepositCommandHandler(depositServiceMock.Object, accountServiceMock.Object,
                 eventPublisherMock.Object);
@@ -46,7 +46,7 @@ namespace ModulesTests.DepositModule
             Assert.False(canHandle);
         }
 
-        class MockAggregate : AbstractAggregate
+        class MockAggregate : AccountAggregate
         {
             public MockAggregate(Guid guid)
             {
@@ -66,8 +66,8 @@ namespace ModulesTests.DepositModule
             var publishedEvents = new List<IEvent>();
             var depositServiceMock = new Mock<IAggregateService<DepositAggregate>>();
             depositServiceMock.Setup(m => m.Load(It.IsAny<Guid>())).Returns((Guid guid) => new DepositAggregate());
-               
-            var accountServiceMock = new Mock<IAggregateService<IAggregate>>();
+
+            var accountServiceMock = new Mock<IAggregateService<AccountAggregate>>();
             accountServiceMock.Setup(m => m.Load(It.IsAny<Guid>())).Returns(() => new MockAggregate(accountId));
             var eventPublisherMock = new Mock<IEventPublisher>();
             eventPublisherMock.Setup(m => m.Publish(It.IsAny<IEvent>())).Callback((IEvent e) => publishedEvents.Add(e));
@@ -96,7 +96,7 @@ namespace ModulesTests.DepositModule
         {
             var publishedEvents = new List<IEvent>();
             var depositServiceMock = new Mock<IAggregateService<DepositAggregate>>();
-            var accountServiceMock = new Mock<IAggregateService<IAggregate>>();
+            var accountServiceMock = new Mock<IAggregateService<AccountAggregate>>();
             var eventPublisherMock = new Mock<IEventPublisher>();
             eventPublisherMock.Setup(m => m.Publish(It.IsAny<IEvent>())).Callback((IEvent e) => publishedEvents.Add(e));
             var commandHandler = new CreateDepositCommandHandler(depositServiceMock.Object, accountServiceMock.Object,
@@ -118,7 +118,7 @@ namespace ModulesTests.DepositModule
         {
             var publishedEvents = new List<IEvent>();
             var depositServiceMock = new Mock<IAggregateService<DepositAggregate>>();
-            var accountServiceMock = new Mock<IAggregateService<IAggregate>>();
+            var accountServiceMock = new Mock<IAggregateService<AccountAggregate>>();
             accountServiceMock.Setup(m => m.Load(It.IsAny<Guid>())).Returns(() => new AccountAggregate());
             var eventPublisherMock = new Mock<IEventPublisher>();
             eventPublisherMock.Setup(m => m.Publish(It.IsAny<IEvent>())).Callback((IEvent e) => publishedEvents.Add(e));
@@ -156,7 +156,7 @@ namespace ModulesTests.DepositModule
                 aggregate.Apply(new CreateDepositEvent { ItemGuid = guid });
                 return aggregate;
             });
-            var accountServiceMock = new Mock<IAggregateService<IAggregate>>();
+            var accountServiceMock = new Mock<IAggregateService<AccountAggregate>>();
             accountServiceMock.Setup(m => m.Load(It.IsAny<Guid>())).Returns(() => new MockAggregate(accountId));
             var eventPublisherMock = new Mock<IEventPublisher>();
             eventPublisherMock.Setup(m => m.Publish(It.IsAny<IEvent>())).Callback((IEvent e) => publishedEvents.Add(e));

@@ -1,8 +1,6 @@
-﻿using ReadDB;
-
-namespace Tests
+﻿namespace ReadDB
 {
-    class SqLiteCtxFactoryMethod : IDbContextFactoryMethod<SqLiteDbContext>
+    public class SqLiteCtxFactoryMethod : IDbContextFactoryMethod<SqLiteDbContext>
     {
         public SqLiteDbContext Create()
         {

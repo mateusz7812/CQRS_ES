@@ -1,4 +1,5 @@
 ﻿using System;
+using AccountModule.Write;
 using Commands;
 using Core;
 using DepositModule.Write;
@@ -9,17 +10,15 @@ namespace DepositModule.CreateDeposit
     public class CreateDepositCommandHandler : AbstractCommandHandler<CreateDepositCommand>
     {
         private readonly IAggregateService<DepositAggregate> _depositAggregateService;
-        private readonly IAggregateService<IAggregate> _accountAggregateService;
-        private readonly IEventPublisher _eventPublisher;
+        private readonly IAggregateService<AccountAggregate> _accountAggregateService;
 
         public CreateDepositCommandHandler(IAggregateService<DepositAggregate> depositAggregateService,
-            IAggregateService<IAggregate> accountAggregateService,
+            IAggregateService<AccountAggregate> accountAggregateService,
             IEventPublisher eventPublisher): 
             base(eventPublisher)
         {
             _depositAggregateService = depositAggregateService;
             _accountAggregateService = accountAggregateService;
-            _eventPublisher = eventPublisher;
         }
 
         public override void Handle(ICommand item)

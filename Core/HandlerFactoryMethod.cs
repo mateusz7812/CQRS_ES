@@ -5,6 +5,10 @@ namespace Core
 {
     public class HandlerFactoryMethod<T> : IHandlerFactoryMethod<T> where T : IHandleable
     {
+        public HandlerFactoryMethod()
+        {
+            
+        }
         private readonly List<IHandler<T>> _handlers = new List<IHandler<T>>();
 
         public void AddHandler(IHandler<T> handler)

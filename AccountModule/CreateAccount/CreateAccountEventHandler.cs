@@ -4,7 +4,7 @@ using Models;
 
 namespace AccountModule.CreateAccount
 {
-    public class CreateAccountEventHandler : IHandler<IEvent>
+    public class CreateAccountEventHandler : AbstractEventHandler<CreateAccountEvent>
     {
         private readonly IService<AccountModel> _accountService;
 
@@ -13,16 +13,11 @@ namespace AccountModule.CreateAccount
             _accountService = accountService;
         }
 
-        public void Handle(IEvent item)
+        public override void Handle(IEvent item)
         {
             var createAccountEvent = (CreateAccountEvent) item;
             var account = new AccountModel{Guid = createAccountEvent.ItemGuid, Name = createAccountEvent.AccountName};
             _accountService.Save(account);
-        }
-
-        public bool CanHandle(IEvent item)
-        {
-            return item is CreateAccountEvent;
         }
     }
 }

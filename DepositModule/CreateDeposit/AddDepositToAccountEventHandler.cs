@@ -3,7 +3,7 @@ using Events;
 
 namespace DepositModule.CreateDeposit
 {
-    public class AddDepositToAccountEventHandler: IHandler<IEvent>
+    public class AddDepositToAccountEventHandler: IEventHandler<AddDepositToAccountEvent>
     {
         public void Handle(IEvent item)
         {
